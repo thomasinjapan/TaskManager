@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "esnext",
+        "outDir": "./wwwroot/dist",
+        "strict": true,
+        "esModuleInterop": true
+    },
+    "include": [ "src/**/*" ]
+}

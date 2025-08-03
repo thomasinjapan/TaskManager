@@ -1,0 +1,28 @@
+{
+    "name": "my-vanilla-ts-app",
+    "version": "1.0.0",
+    "description": "ASP.NET Core + vanilla TypeScript Starter (ohne esbuild)",
+
+    "scripts": {
+        "clean-wwwroot-dist": "rimraf wwwroot/dist/",
+        "build-wwwroot": "npm run clean-wwwroot-dist && esbuild src/main.ts --bundle --outfile=wwwroot/dist/main.js --sourcemap",
+        "watch-wwwroot": "esbuild src/main.ts --bundle --outfile=wwwroot/dist/main.js --sourcemap --watch",
+
+        "clean-localroot": "rimraf localroot/main.js",
+        "build-localroot": "npm run clean-localroot && esbuild src/main.ts --bundle --outfile=localroot/main.js --sourcemap",
+        "watch-localroot": "esbuild src/main.ts --bundle --outfile=localroot/main.js --sourcemap --watch",
+
+        "build": "npm run build-wwwroot && npm run build-localroot"
+    },
+
+
+
+    "dependencies": {
+        "typescript": "^5.9.2"
+    },
+    "devDependencies": {
+        "esbuild": "^0.25.8",
+        "eslint": "^9.32.0",
+        "rimraf": "^6.0.1"
+    }
+}
