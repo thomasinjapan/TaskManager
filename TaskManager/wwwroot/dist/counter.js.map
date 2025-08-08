@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../src/counter.ts"],
+  "sourcesContent": ["\uFEFF/**  src/counter.ts  **/\r\nimport { EventEmitter } from './EventHandling.js';\r\n\r\nexport class Counter extends EventEmitter {\r\n    private _count: number;\r\n\r\n    constructor(initialValue: number = 0) {\r\n        super();\r\n        this._count = initialValue;\r\n    }\r\n\r\n    get count(): number {\r\n        return this._count;\r\n    }\r\n\r\n    increment(): number {\r\n        this._count += 1;\r\n        this.emit('change', [this.count]);\r\n        console.log(`tried to trigger change`);\r\n        return this._count;\r\n    }\r\n\r\n    decrement(): number {\r\n        this._count -= 1;\r\n        return this._count;\r\n    }\r\n\r\n    reset(): number {\r\n        this._count = 0;\r\n        return this._count;\r\n    }\r\n}"],
+  "mappings": "AACA,SAAS,oBAAoB;AAEtB,MAAM,gBAAgB,aAAa;AAAA,EAGtC,YAAY,eAAuB,GAAG;AAClC,UAAM;AACN,SAAK,SAAS;AAAA,EAClB;AAAA,EAEA,IAAI,QAAgB;AAChB,WAAO,KAAK;AAAA,EAChB;AAAA,EAEA,YAAoB;AAChB,SAAK,UAAU;AACf,SAAK,KAAK,UAAU,CAAC,KAAK,KAAK,CAAC;AAChC,YAAQ,IAAI,yBAAyB;AACrC,WAAO,KAAK;AAAA,EAChB;AAAA,EAEA,YAAoB;AAChB,SAAK,UAAU;AACf,WAAO,KAAK;AAAA,EAChB;AAAA,EAEA,QAAgB;AACZ,SAAK,SAAS;AACd,WAAO,KAAK;AAAA,EAChB;AACJ;",
+  "names": []
+}

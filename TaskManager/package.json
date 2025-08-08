@@ -5,12 +5,12 @@
 
     "scripts": {
         "clean-wwwroot-dist": "rimraf wwwroot/dist/",
-        "build-wwwroot": "npm run clean-wwwroot-dist && esbuild src/main.ts --bundle --outfile=wwwroot/dist/main.js --sourcemap",
-        "watch-wwwroot": "esbuild src/main.ts --bundle --outfile=wwwroot/dist/main.js --sourcemap --watch",
+        "build-wwwroot": "npm run clean-wwwroot-dist && esbuild src/**/*.ts --format=esm --outdir=wwwroot/dist --sourcemap",
+        "watch-wwwroot": "esbuild src/**/*.ts --format=esm --outdir=wwwroot/dist --sourcemap --watch",
 
         "clean-localroot": "rimraf localroot/main.js",
-        "build-localroot": "npm run clean-localroot && esbuild src/main.ts --bundle --outfile=localroot/main.js --sourcemap",
-        "watch-localroot": "esbuild src/main.ts --bundle --outfile=localroot/main.js --sourcemap --watch",
+        "build-localroot": "npm run clean-localroot && esbuild src/app-ui.ts --bundle --outfile=localroot/main.js --sourcemap",
+        "watch-localroot": "esbuild src/local-entry.ts --bundle --outfile=localroot/bundle.js --sourcemap --watch",
 
         "build": "npm run build-wwwroot && npm run build-localroot"
     },

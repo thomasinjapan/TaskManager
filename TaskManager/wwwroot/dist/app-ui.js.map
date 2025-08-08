@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../src/app-ui.ts"],
+  "sourcesContent": ["\uFEFF/**  src/app-ui.ts  **/\n\nimport { Counter } from './counter.js';\nimport { CounterUI } from './counter-ui.js';\n\n// Wait for DOM to be fully loaded\nfunction initializeApp(): void {\n    const appContainer = document.getElementById('app-ui') as HTMLElement;\n    if (!appContainer) {\n        throw new Error('App container not found');\n    }\n    console.log('App container found:', appContainer);\n\n    // Initialize counter and counter UI\n    const counter = new Counter();\n    const counterUI = new CounterUI(appContainer, counter);\n}\n\ndocument.addEventListener('DOMContentLoaded', initializeApp);"],
+  "mappings": "AAEA,SAAS,eAAe;AACxB,SAAS,iBAAiB;AAG1B,SAAS,gBAAsB;AAC3B,QAAM,eAAe,SAAS,eAAe,QAAQ;AACrD,MAAI,CAAC,cAAc;AACf,UAAM,IAAI,MAAM,yBAAyB;AAAA,EAC7C;AACA,UAAQ,IAAI,wBAAwB,YAAY;AAGhD,QAAM,UAAU,IAAI,QAAQ;AAC5B,QAAM,YAAY,IAAI,UAAU,cAAc,OAAO;AACzD;AAEA,SAAS,iBAAiB,oBAAoB,aAAa;",
+  "names": []
+}
