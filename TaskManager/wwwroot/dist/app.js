@@ -10,10 +10,7 @@ class App {
             <div id="task-ui"></div><br />
         `;
     this._container = container;
-    console.log("container used for StartUI:", this._container);
-    console.log("container inner html before design render:", this._container.innerHTML);
     this._container.innerHTML = this._design;
-    console.log("container inner html after design render:", this._container.innerHTML);
     this.initializeObjects();
   }
   getUIElementById(id) {
