@@ -17,12 +17,9 @@ export class App {
     /** Constructor and UI **/
     constructor(container: HTMLElement) {
         this._container = container
-        console.log('container used for StartUI:', this._container)
-
+        
         // Render the counter UI
-        console.log('container inner html before design render:', this._container.innerHTML)
         this._container.innerHTML = this._design
-        console.log('container inner html after design render:', this._container.innerHTML)
 
         // Initialize the display with current count
         this.initializeObjects();
