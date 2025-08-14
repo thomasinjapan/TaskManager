@@ -26,6 +26,9 @@ export class CounterUI {
         this._counter = counter;
 
         // Render the counter UI
+        console.log('countainer:', this._container);
+        console.log('inner-html:', this._container.innerHTML);
+        console.log('design:', this._design);
         this._container.innerHTML = this._design
 
         // Get the count display element

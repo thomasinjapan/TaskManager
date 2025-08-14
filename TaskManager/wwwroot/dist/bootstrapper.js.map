@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../src/bootstrapper.ts"],
+  "sourcesContent": ["\uFEFF/**  src/bootstrapper.ts  **/\n\nimport { App } from './app.js';\n\n// Wait for DOM to be fully loaded\nfunction initializeApp(): void {\n    const appContainer = document.getElementById('bootstrapper') as HTMLElement;\n    if (!appContainer) {\n        throw new Error('App container not found');\n    }\n    console.log('App container found:');\n\n    // Initialize counter and counter UI\n    const bootstrapper = new App(appContainer);\n}\n\ndocument.addEventListener('DOMContentLoaded', initializeApp);"],
+  "mappings": "AAEA,SAAS,WAAW;AAGpB,SAAS,gBAAsB;AAC3B,QAAM,eAAe,SAAS,eAAe,cAAc;AAC3D,MAAI,CAAC,cAAc;AACf,UAAM,IAAI,MAAM,yBAAyB;AAAA,EAC7C;AACA,UAAQ,IAAI,sBAAsB;AAGlC,QAAM,eAAe,IAAI,IAAI,YAAY;AAC7C;AAEA,SAAS,iBAAiB,oBAAoB,aAAa;",
+  "names": []
+}

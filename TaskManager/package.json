@@ -1,21 +1,19 @@
 {
     "name": "my-vanilla-ts-app",
     "version": "1.0.0",
-    "description": "ASP.NET Core + vanilla TypeScript Starter (ohne esbuild)",
+    "description": "ASP.NET Core + vanilla TypeScript Starter",
 
     "scripts": {
         "clean-wwwroot-dist": "rimraf wwwroot/dist/",
-        "build-wwwroot": "npm run clean-wwwroot-dist && esbuild src/**/*.ts --format=esm --outdir=wwwroot/dist --sourcemap",
-        "watch-wwwroot": "esbuild src/**/*.ts --format=esm --outdir=wwwroot/dist --sourcemap --watch",
+        "build-wwwroot": "npm run clean-wwwroot-dist && esbuild src/**/*.ts --format=esm --outdir=wwwroot/dist/ --sourcemap",
+        "watch-wwwroot": "esbuild src/**/*.ts --format=esm --outdir=wwwroot/dist/ --sourcemap --watch",
 
-        "clean-localroot": "rimraf localroot/main.js",
-        "build-localroot": "npm run clean-localroot && esbuild src/app-ui.ts --bundle --outfile=localroot/main.js --sourcemap",
-        "watch-localroot": "esbuild src/local-entry.ts --bundle --outfile=localroot/bundle.js --sourcemap --watch",
+        "clean-localroot": "rimraf localroot/bundle.js",
+        "build-localroot": "npm run clean-localroot && esbuild src/bootstrapper.ts --bundle --outfile=localroot/bundle.js --sourcemap",
+        "watch-localroot": "esbuild src/bootstrapper.ts --bundle --outfile=localroot/bundle.js --sourcemap --watch",
 
         "build": "npm run build-wwwroot && npm run build-localroot"
     },
-
-
 
     "dependencies": {
         "typescript": "^5.9.2"

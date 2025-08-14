@@ -32,6 +32,31 @@
     }
   };
 
+  // src/task.ts
+  var Task = class extends EventEmitter {
+    constructor(initialTitle, initialDescription) {
+      super();
+      this._title = initialTitle;
+      this._description = initialDescription;
+    }
+    get title() {
+      return this._title;
+    }
+    set title(value) {
+      this._title = value;
+      this.emit("title_updated", []);
+      this.emit("updated", []);
+    }
+    get description() {
+      return this._description;
+    }
+    set description(value) {
+      this._description = value;
+      this.emit("description_updated", []);
+      this.emit("updated", []);
+    }
+  };
+
   // src/counter-ui.ts
   var CounterUI = class {
     /** Constructor and UI **/
@@ -50,6 +75,9 @@
         `;
       this._container = container;
       this._counter = counter;
+      console.log("countainer:", this._container);
+      console.log("inner-html:", this._container.innerHTML);
+      console.log("design:", this._design);
       this._container.innerHTML = this._design;
       this._ui_lblCount = this.getUIElementById("count-display");
       this.updateUI();
@@ -101,16 +129,86 @@
     }
   };
 
-  // src/app-ui.ts
+  // src/task-ui.ts
+  var TaskUI = class {
+    /** Constructor and UI **/
+    constructor(container, task) {
+      this._lblTaskTitle = null;
+      this._lblTaskDescription = null;
+      this._design = `
+            <div class="task-ui">
+                <h1>Task</h1>
+                <div id="task-title">NOT DEFINED</div>
+                <div id="task-description"></div
+            </div>
+        `;
+      this._container = container;
+      this._task = task;
+      this._container.innerHTML = this._design;
+      this._lblTaskTitle = this.getUIElementById("task-title");
+      this._lblTaskDescription = this.getUIElementById("task-description");
+      this.updateUI();
+      this.setupEventListeners();
+      this.setupCounterEventHandlers();
+    }
+    getUIElementById(id) {
+      return this._container.querySelector(`#${id}`);
+    }
+    /** Event handlers **/
+    setupEventListeners() {
+    }
+    setupCounterEventHandlers() {
+      this._task.addEventListener("updated", this.onTaskUpdated.bind(this));
+    }
+    onTaskUpdated(e) {
+      this.updateUI();
+      console.log(`Task was updated`);
+    }
+    /** Logic **/
+    updateUI() {
+      if (!this._lblTaskDescription || !this._lblTaskTitle) return;
+      this._lblTaskTitle.textContent = this._task.title.toString();
+      this._lblTaskDescription.textContent = this._task.description.toString();
+    }
+  };
+
+  // src/app.ts
+  var App = class {
+    /** Constructor and UI **/
+    constructor(container) {
+      this._design = `
+            <div id="counter-ui"></div><br />
+            <div id="task-ui"></div><br />
+        `;
+      this._container = container;
+      console.log("container used for StartUI:", this._container);
+      console.log("container inner html before design render:", this._container.innerHTML);
+      this._container.innerHTML = this._design;
+      console.log("container inner html after design render:", this._container.innerHTML);
+      this.initializeObjects();
+    }
+    getUIElementById(id) {
+      return this._container.querySelector(`#${id}`);
+    }
+    initializeObjects() {
+      const counterContainer = this.getUIElementById("counter-ui");
+      const taskContainer = this.getUIElementById("task-ui");
+      const counter = new Counter();
+      const task = new Task("New Task", "New Description");
+      const counterUI = new CounterUI(counterContainer, counter);
+      const taskUI = new TaskUI(taskContainer, task);
+    }
+  };
+
+  // src/bootstrapper.ts
   function initializeApp() {
-    const appContainer = document.getElementById("app-ui");
+    const appContainer = document.getElementById("bootstrapper");
     if (!appContainer) {
       throw new Error("App container not found");
     }
-    console.log("App container found:", appContainer);
-    const counter = new Counter();
-    const counterUI = new CounterUI(appContainer, counter);
+    console.log("App container found:");
+    const bootstrapper = new App(appContainer);
   }
   document.addEventListener("DOMContentLoaded", initializeApp);
 })();
-//# sourceMappingURL=main.js.map
+//# sourceMappingURL=bundle.js.map

@@ -15,6 +15,9 @@ class CounterUI {
         `;
     this._container = container;
     this._counter = counter;
+    console.log("countainer:", this._container);
+    console.log("inner-html:", this._container.innerHTML);
+    console.log("design:", this._design);
     this._container.innerHTML = this._design;
     this._ui_lblCount = this.getUIElementById("count-display");
     this.updateUI();
