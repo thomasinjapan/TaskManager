@@ -26,9 +26,6 @@ export class CounterUI {
         this._counter = counter;
 
         // Render the counter UI
-        console.log('countainer:', this._container);
-        console.log('inner-html:', this._container.innerHTML);
-        console.log('design:', this._design);
         this._container.innerHTML = this._design
 
         // Get the count display element
@@ -86,9 +83,9 @@ export class CounterUI {
     }
 
     private onChange(e: Event): void {
-        console.log(`Counter triggered`);
+        console.log('Counter triggered');
         const [newValue] = (e as CustomEvent).detail;
-        console.log(`Counter changed to: ${newValue}`);
+        console.log('Counter changed to: ',newValue);
     }
 
     /** Logic **/
