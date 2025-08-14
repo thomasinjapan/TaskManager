@@ -3,9 +3,9 @@ import { EventEmitter } from './EventHandling.js';
 
 export class Task extends EventEmitter {
     private _title: string;
-    private _description: string;
+    private _description: string | null;
 
-    constructor(initialTitle: string, initialDescription: string) {
+    constructor(initialTitle: string, initialDescription: string | null) {
         super();
         this._title = initialTitle;
         this._description = initialDescription;
@@ -21,7 +21,7 @@ export class Task extends EventEmitter {
         this.emit('updated', []);
     }
 
-    get description(): string{
+    get description(): string | null{
         return this._description ;
     }
 
