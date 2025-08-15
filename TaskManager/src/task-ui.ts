@@ -90,6 +90,4 @@ export class TaskUI {
         this._lblTaskDescription.textContent = this._task.description.toString();
     }
 
-
-
 }

@@ -22,8 +22,8 @@ export class Task extends EventEmitter {
 
     set title(value: string) {
         this._title = value;
-        this.emit('title_updated', []);
-        this.emit('updated', []);
+        this.emit(this.EVENT_TITLE_UPDATED, []);
+        this.emit(this.EVENT_UPDATED, []);
     }
 
     get description(): string {
@@ -32,7 +32,7 @@ export class Task extends EventEmitter {
 
     set description(value: string) {
         this._description = value;
-        this.emit('description_updated', []);
-        this.emit('updated', []);
+        this.emit(this.EVENT_DESCRIPTION_UPDATED, []);
+        this.emit(this.EVENT_UPDATED, []);
     }
 }

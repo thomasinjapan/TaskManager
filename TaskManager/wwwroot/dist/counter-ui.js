@@ -39,7 +39,7 @@ class CounterUI {
     this._btnReset?.addEventListener("click", this.handleReset.bind(this));
   }
   setupCounterEventHandlers() {
-    this._counter.addEventListener(this._counter.EVENT_CHANGE, this.onChange.bind(this));
+    this._counter.addEventListener(this._counter.EVENT_CHANGED, this.onChange.bind(this));
   }
   handleIncrement() {
     const newCount = this._counter.increment();

@@ -61,7 +61,7 @@ export class CounterUI {
 
     private setupCounterEventHandlers(): void {
         // Use a single event listener for all counter events
-        this._counter.addEventListener(this._counter.EVENT_CHANGE, this.onChange.bind(this));
+        this._counter.addEventListener(this._counter.EVENT_CHANGED, this.onChange.bind(this));
     }
 
     private handleIncrement(): void {

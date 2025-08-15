@@ -2,7 +2,8 @@ import { EventEmitter } from "./EventHandling.js";
 class Counter extends EventEmitter {
   constructor(initialValue = 0) {
     super();
-    this.EVENT_CHANGE = "change";
+    /** list of all valid events **/
+    this.EVENT_CHANGED = "changed";
     this._count = initialValue;
   }
   get count() {
@@ -10,12 +11,12 @@ class Counter extends EventEmitter {
   }
   increment() {
     this._count += 1;
-    this.emit("change", [this.count]);
-    console.log(`tried to trigger change`);
+    this.emit(this.EVENT_CHANGED, [this.count]);
     return this._count;
   }
   decrement() {
     this._count -= 1;
+    this.emit(this.EVENT_CHANGED, [this.count]);
     return this._count;
   }
   reset() {

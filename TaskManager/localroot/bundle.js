@@ -11,7 +11,8 @@
   var Counter = class extends EventEmitter {
     constructor(initialValue = 0) {
       super();
-      this.EVENT_CHANGE = "change";
+      /** list of all valid events **/
+      this.EVENT_CHANGED = "changed";
       this._count = initialValue;
     }
     get count() {
@@ -19,12 +20,12 @@
     }
     increment() {
       this._count += 1;
-      this.emit("change", [this.count]);
-      console.log(`tried to trigger change`);
+      this.emit(this.EVENT_CHANGED, [this.count]);
       return this._count;
     }
     decrement() {
       this._count -= 1;
+      this.emit(this.EVENT_CHANGED, [this.count]);
       return this._count;
     }
     reset() {
@@ -49,16 +50,16 @@
     }
     set title(value) {
       this._title = value;
-      this.emit("title_updated", []);
-      this.emit("updated", []);
+      this.emit(this.EVENT_TITLE_UPDATED, []);
+      this.emit(this.EVENT_UPDATED, []);
     }
     get description() {
       return this._description;
     }
     set description(value) {
       this._description = value;
-      this.emit("description_updated", []);
-      this.emit("updated", []);
+      this.emit(this.EVENT_DESCRIPTION_UPDATED, []);
+      this.emit(this.EVENT_UPDATED, []);
     }
   };
 
@@ -104,7 +105,7 @@
       this._btnReset?.addEventListener("click", this.handleReset.bind(this));
     }
     setupCounterEventHandlers() {
-      this._counter.addEventListener(this._counter.EVENT_CHANGE, this.onChange.bind(this));
+      this._counter.addEventListener(this._counter.EVENT_CHANGED, this.onChange.bind(this));
     }
     handleIncrement() {
       const newCount = this._counter.increment();
