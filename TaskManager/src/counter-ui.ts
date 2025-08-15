@@ -14,11 +14,11 @@ export class CounterUI {
     private _design: string = `
             <div class="counter-container">
                 <h1>TypeScript Counter</h1>
-                <div id="count-display">0</div>
+                <div id="lblCount">0</div>
                 <div>
-                    <button id="decrement-btn">Decrement</button>
-                    <button id="reset-btn">Reset</button>
-                    <button id="increment-btn">Increment</button>
+                    <button id="cmdDecrement">Decrement</button>
+                    <button id="cmdReset">Reset</button>
+                    <button id="cmdIncrement">Increment</button>
                 </div>
             </div>
         `;
@@ -30,16 +30,14 @@ export class CounterUI {
 
         // Render the counter UI
         this._container.innerHTML = this._design
-        console.log('Counter UI initialized');
-
+        
         // Get the count display element
-        this._lblCount = this.getUIElementById('count-display');
+        this._lblCount = this.getUIElementById('lblCount');
 
-        this._btnIncrement = this.getUIElementById('increment-btn');
-        this._btnDecrement = this.getUIElementById('decrement-btn');
-        this._btnReset = this.getUIElementById('reset-btn');
-        console.log('Buttons initialized:', this._btnIncrement, this._btnDecrement, this._btnReset);
-
+        this._btnIncrement = this.getUIElementById('cmdIncrement');
+        this._btnDecrement = this.getUIElementById('cmdDecrement');
+        this._btnReset = this.getUIElementById('cmdReset');
+        
         // Initialize the display with current count
         this.updateUI();
 
@@ -48,8 +46,8 @@ export class CounterUI {
         this.setupCounterEventHandlers();
     }
 
-    private getUIElementById(id: string): HTMLElement | null {
-        return this._container.querySelector(`#${id}`);
+    private getUIElementById<T extends HTMLElement>(id: string): T | null {
+        return this._container.querySelector(`#${id}`) as T | null;
     }
 
     /** Event handlers **/

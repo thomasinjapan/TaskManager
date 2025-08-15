@@ -8,30 +8,24 @@ class TaskUI {
     this._design = `
             <div class="task-ui">
                 <h1>Task</h1>
-                <div id="task-title">NOT DEFINED</div>
-                <input type="text" id="task-title-edit" />
-                <div id="task-description"></div>
-                <textarea id="task-description-edit"></textarea>
+                <div id="lblTaskTitle">NOT DEFINED</div>
+                <input type="text" id="txtTaskTitle" />
+                <div id="lblTaskDescription"></div>
+                <textarea id="txtTaskDescription"></textarea>
             </div>
         `;
     this._container = container;
     this._task = task;
     this._container.innerHTML = this._design;
-    this._lblTaskTitle = this.getUIElementById("task-title");
-    this._lblTaskDescription = this.getUIElementById("task-description");
-    this._txtTaskTitle = this.getUIInputElementById("task-title-edit");
-    this._txtTaskDescription = this.getUITextAreaElementById("task-description-edit");
+    this._lblTaskTitle = this.getUIElementById("lblTaskTitle");
+    this._lblTaskDescription = this.getUIElementById("lblTaskDescription");
+    this._txtTaskTitle = this.getUIElementById("txtTaskTitle");
+    this._txtTaskDescription = this.getUIElementById("txtTaskDescription");
     this.updateUI();
     this.setupDOMEventListeners();
     this.setupObjectEventHandlers();
   }
   getUIElementById(id) {
-    return this._container.querySelector(`#${id}`);
-  }
-  getUIInputElementById(id) {
-    return this._container.querySelector(`#${id}`);
-  }
-  getUITextAreaElementById(id) {
     return this._container.querySelector(`#${id}`);
   }
   /** Event handlers **/

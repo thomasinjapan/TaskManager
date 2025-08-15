@@ -8,23 +8,21 @@ class CounterUI {
     this._design = `
             <div class="counter-container">
                 <h1>TypeScript Counter</h1>
-                <div id="count-display">0</div>
+                <div id="lblCount">0</div>
                 <div>
-                    <button id="decrement-btn">Decrement</button>
-                    <button id="reset-btn">Reset</button>
-                    <button id="increment-btn">Increment</button>
+                    <button id="cmdDecrement">Decrement</button>
+                    <button id="cmdReset">Reset</button>
+                    <button id="cmdIncrement">Increment</button>
                 </div>
             </div>
         `;
     this._container = container;
     this._counter = counter;
     this._container.innerHTML = this._design;
-    console.log("Counter UI initialized");
-    this._lblCount = this.getUIElementById("count-display");
-    this._btnIncrement = this.getUIElementById("increment-btn");
-    this._btnDecrement = this.getUIElementById("decrement-btn");
-    this._btnReset = this.getUIElementById("reset-btn");
-    console.log("Buttons initialized:", this._btnIncrement, this._btnDecrement, this._btnReset);
+    this._lblCount = this.getUIElementById("lblCount");
+    this._btnIncrement = this.getUIElementById("cmdIncrement");
+    this._btnDecrement = this.getUIElementById("cmdDecrement");
+    this._btnReset = this.getUIElementById("cmdReset");
     this.updateUI();
     this.setupEventListeners();
     this.setupCounterEventHandlers();

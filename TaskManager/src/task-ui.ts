@@ -14,10 +14,10 @@ export class TaskUI {
     private _design: string = `
             <div class="task-ui">
                 <h1>Task</h1>
-                <div id="task-title">NOT DEFINED</div>
-                <input type="text" id="task-title-edit" />
-                <div id="task-description"></div>
-                <textarea id="task-description-edit"></textarea>
+                <div id="lblTaskTitle">NOT DEFINED</div>
+                <input type="text" id="txtTaskTitle" />
+                <div id="lblTaskDescription"></div>
+                <textarea id="txtTaskDescription"></textarea>
             </div>
         `;
 
@@ -31,11 +31,11 @@ export class TaskUI {
         this._container.innerHTML = this._design
 
         // Get the display elements to interact with
-        this._lblTaskTitle = this.getUIElementById('task-title')
-        this._lblTaskDescription = this.getUIElementById('task-description');
+        this._lblTaskTitle = this.getUIElementById<HTMLElement>('lblTaskTitle')
+        this._lblTaskDescription = this.getUIElementById<HTMLElement>('lblTaskDescription');
 
-        this._txtTaskTitle = this.getUIInputElementById('task-title-edit')
-        this._txtTaskDescription = this.getUITextAreaElementById('task-description-edit');
+        this._txtTaskTitle = this.getUIElementById<HTMLInputElement>('txtTaskTitle')
+        this._txtTaskDescription = this.getUIElementById<HTMLTextAreaElement>('txtTaskDescription');
 
         // Initialize the display with current count
         this.updateUI();
@@ -45,16 +45,8 @@ export class TaskUI {
         this.setupObjectEventHandlers();
     }
 
-    private getUIElementById(id: string): HTMLElement | null {
-        return this._container.querySelector(`#${id}`);
-    }
-
-    private getUIInputElementById(id: string): HTMLInputElement | null {
-        return this._container.querySelector(`#${id}`);
-    }
-
-    private getUITextAreaElementById(id: string): HTMLTextAreaElement | null {
-        return this._container.querySelector(`#${id}`);
+    private getUIElementById<T extends HTMLElement>(id: string): T | null {
+        return this._container.querySelector(`#${id}`) as T | null;
     }
 
     /** Event handlers **/

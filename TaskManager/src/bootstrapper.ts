@@ -8,7 +8,7 @@ function initializeApp(): void {
     if (!appContainer) {
         throw new Error('App container not found');
     }
-    console.log('App container found:');
+    console.log('App container found:', appContainer);
 
     // Initialize counter and counter UI
     const bootstrapper = new App(appContainer);

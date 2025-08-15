@@ -74,23 +74,21 @@
       this._design = `
             <div class="counter-container">
                 <h1>TypeScript Counter</h1>
-                <div id="count-display">0</div>
+                <div id="lblCount">0</div>
                 <div>
-                    <button id="decrement-btn">Decrement</button>
-                    <button id="reset-btn">Reset</button>
-                    <button id="increment-btn">Increment</button>
+                    <button id="cmdDecrement">Decrement</button>
+                    <button id="cmdReset">Reset</button>
+                    <button id="cmdIncrement">Increment</button>
                 </div>
             </div>
         `;
       this._container = container;
       this._counter = counter;
       this._container.innerHTML = this._design;
-      console.log("Counter UI initialized");
-      this._lblCount = this.getUIElementById("count-display");
-      this._btnIncrement = this.getUIElementById("increment-btn");
-      this._btnDecrement = this.getUIElementById("decrement-btn");
-      this._btnReset = this.getUIElementById("reset-btn");
-      console.log("Buttons initialized:", this._btnIncrement, this._btnDecrement, this._btnReset);
+      this._lblCount = this.getUIElementById("lblCount");
+      this._btnIncrement = this.getUIElementById("cmdIncrement");
+      this._btnDecrement = this.getUIElementById("cmdDecrement");
+      this._btnReset = this.getUIElementById("cmdReset");
       this.updateUI();
       this.setupEventListeners();
       this.setupCounterEventHandlers();
@@ -142,30 +140,24 @@
       this._design = `
             <div class="task-ui">
                 <h1>Task</h1>
-                <div id="task-title">NOT DEFINED</div>
-                <input type="text" id="task-title-edit" />
-                <div id="task-description"></div>
-                <textarea id="task-description-edit"></textarea>
+                <div id="lblTaskTitle">NOT DEFINED</div>
+                <input type="text" id="txtTaskTitle" />
+                <div id="lblTaskDescription"></div>
+                <textarea id="txtTaskDescription"></textarea>
             </div>
         `;
       this._container = container;
       this._task = task;
       this._container.innerHTML = this._design;
-      this._lblTaskTitle = this.getUIElementById("task-title");
-      this._lblTaskDescription = this.getUIElementById("task-description");
-      this._txtTaskTitle = this.getUIInputElementById("task-title-edit");
-      this._txtTaskDescription = this.getUITextAreaElementById("task-description-edit");
+      this._lblTaskTitle = this.getUIElementById("lblTaskTitle");
+      this._lblTaskDescription = this.getUIElementById("lblTaskDescription");
+      this._txtTaskTitle = this.getUIElementById("txtTaskTitle");
+      this._txtTaskDescription = this.getUIElementById("txtTaskDescription");
       this.updateUI();
       this.setupDOMEventListeners();
       this.setupObjectEventHandlers();
     }
     getUIElementById(id) {
-      return this._container.querySelector(`#${id}`);
-    }
-    getUIInputElementById(id) {
-      return this._container.querySelector(`#${id}`);
-    }
-    getUITextAreaElementById(id) {
       return this._container.querySelector(`#${id}`);
     }
     /** Event handlers **/
@@ -225,7 +217,7 @@
     if (!appContainer) {
       throw new Error("App container not found");
     }
-    console.log("App container found:");
+    console.log("App container found:", appContainer);
     const bootstrapper = new App(appContainer);
   }
   document.addEventListener("DOMContentLoaded", initializeApp);

@@ -4,7 +4,7 @@ function initializeApp() {
   if (!appContainer) {
     throw new Error("App container not found");
   }
-  console.log("App container found:");
+  console.log("App container found:", appContainer);
   const bootstrapper = new App(appContainer);
 }
 document.addEventListener("DOMContentLoaded", initializeApp);
