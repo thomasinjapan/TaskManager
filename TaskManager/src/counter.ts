@@ -4,6 +4,8 @@ import { EventEmitter } from './EventHandling.js';
 export class Counter extends EventEmitter {
     private _count: number;
 
+    public EVENT_CHANGE: string = 'change';
+
     constructor(initialValue: number = 0) {
         super();
         this._count = initialValue;

@@ -2,6 +2,7 @@ import { EventEmitter } from "./EventHandling.js";
 class Counter extends EventEmitter {
   constructor(initialValue = 0) {
     super();
+    this.EVENT_CHANGE = "change";
     this._count = initialValue;
   }
   get count() {

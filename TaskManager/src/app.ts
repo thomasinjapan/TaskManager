@@ -1,4 +1,4 @@
-﻿/**  src/start-ui.ts  **/
+﻿/**  src/app.ts  **/
 import { Counter } from './counter.js';
 import { Task } from './task.js';
 import { CounterUI } from './counter-ui.js';
@@ -28,6 +28,7 @@ export class App {
     private getUIElementById(id: string): HTMLElement | null {
         return this._container.querySelector(`#${id}`);
     }
+
     initializeObjects(): void {
         // identify HTML elements
         const counterContainer = this.getUIElementById('counter-ui') as HTMLElement;

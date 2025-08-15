@@ -11,6 +11,7 @@
   var Counter = class extends EventEmitter {
     constructor(initialValue = 0) {
       super();
+      this.EVENT_CHANGE = "change";
       this._count = initialValue;
     }
     get count() {
@@ -36,6 +37,10 @@
   var Task = class extends EventEmitter {
     constructor(initialTitle, initialDescription) {
       super();
+      /** list of all valid events **/
+      this.EVENT_TITLE_UPDATED = "title_updated";
+      this.EVENT_DESCRIPTION_UPDATED = "description_updated";
+      this.EVENT_UPDATED = "updated";
       this._title = initialTitle;
       this._description = initialDescription;
     }
@@ -61,7 +66,10 @@
   var CounterUI = class {
     /** Constructor and UI **/
     constructor(container, counter) {
-      this._ui_lblCount = null;
+      this._lblCount = null;
+      this._btnIncrement = null;
+      this._btnDecrement = null;
+      this._btnReset = null;
       this._design = `
             <div class="counter-container">
                 <h1>TypeScript Counter</h1>
@@ -76,7 +84,12 @@
       this._container = container;
       this._counter = counter;
       this._container.innerHTML = this._design;
-      this._ui_lblCount = this.getUIElementById("count-display");
+      console.log("Counter UI initialized");
+      this._lblCount = this.getUIElementById("count-display");
+      this._btnIncrement = this.getUIElementById("increment-btn");
+      this._btnDecrement = this.getUIElementById("decrement-btn");
+      this._btnReset = this.getUIElementById("reset-btn");
+      console.log("Buttons initialized:", this._btnIncrement, this._btnDecrement, this._btnReset);
       this.updateUI();
       this.setupEventListeners();
       this.setupCounterEventHandlers();
@@ -86,21 +99,12 @@
     }
     /** Event handlers **/
     setupEventListeners() {
-      const btnIncrement = this.getUIElementById("increment-btn");
-      const btnDecrement = this.getUIElementById("decrement-btn");
-      const btnReset = this.getUIElementById("reset-btn");
-      if (btnIncrement) {
-        btnIncrement.addEventListener("click", this.handleIncrement.bind(this));
-      }
-      if (btnDecrement) {
-        btnDecrement.addEventListener("click", this.handleDecrement.bind(this));
-      }
-      if (btnReset) {
-        btnReset.addEventListener("click", this.handleReset.bind(this));
-      }
+      this._btnIncrement?.addEventListener("click", this.handleIncrement.bind(this));
+      this._btnDecrement?.addEventListener("click", this.handleDecrement.bind(this));
+      this._btnReset?.addEventListener("click", this.handleReset.bind(this));
     }
     setupCounterEventHandlers() {
-      this._counter.addEventListener("change", this.onChange.bind(this));
+      this._counter.addEventListener(this._counter.EVENT_CHANGE, this.onChange.bind(this));
     }
     handleIncrement() {
       const newCount = this._counter.increment();
@@ -121,8 +125,8 @@
     }
     /** Logic **/
     updateUI() {
-      if (!this._ui_lblCount) return;
-      this._ui_lblCount.textContent = this._counter.count.toString();
+      if (!this._lblCount) return;
+      this._lblCount.textContent = this._counter.count.toString();
     }
   };
 
@@ -132,11 +136,15 @@
     constructor(container, task) {
       this._lblTaskTitle = null;
       this._lblTaskDescription = null;
+      this._txtTaskTitle = null;
+      this._txtTaskDescription = null;
       this._design = `
             <div class="task-ui">
                 <h1>Task</h1>
                 <div id="task-title">NOT DEFINED</div>
-                <div id="task-description"></div
+                <input type="text" id="task-title-edit" />
+                <div id="task-description"></div>
+                <textarea id="task-description-edit"></textarea>
             </div>
         `;
       this._container = container;
@@ -144,18 +152,34 @@
       this._container.innerHTML = this._design;
       this._lblTaskTitle = this.getUIElementById("task-title");
       this._lblTaskDescription = this.getUIElementById("task-description");
+      this._txtTaskTitle = this.getUIInputElementById("task-title-edit");
+      this._txtTaskDescription = this.getUITextAreaElementById("task-description-edit");
       this.updateUI();
-      this.setupEventListeners();
-      this.setupCounterEventHandlers();
+      this.setupDOMEventListeners();
+      this.setupObjectEventHandlers();
     }
     getUIElementById(id) {
       return this._container.querySelector(`#${id}`);
     }
-    /** Event handlers **/
-    setupEventListeners() {
+    getUIInputElementById(id) {
+      return this._container.querySelector(`#${id}`);
     }
-    setupCounterEventHandlers() {
-      this._task.addEventListener("updated", this.onTaskUpdated.bind(this));
+    getUITextAreaElementById(id) {
+      return this._container.querySelector(`#${id}`);
+    }
+    /** Event handlers **/
+    setupDOMEventListeners() {
+      this._txtTaskTitle?.addEventListener("change", this.onTaskTitleChange.bind(this));
+      this._txtTaskDescription?.addEventListener("change", this.onTaskDescriptionChange.bind(this));
+    }
+    setupObjectEventHandlers() {
+      this._task.addEventListener(this._task.EVENT_UPDATED, this.onTaskUpdated.bind(this));
+    }
+    onTaskTitleChange(e) {
+      this._task.title = e.target.value;
+    }
+    onTaskDescriptionChange(e) {
+      this._task.description = e.target.value;
     }
     onTaskUpdated(e) {
       this.updateUI();

@@ -1,7 +1,10 @@
 class CounterUI {
   /** Constructor and UI **/
   constructor(container, counter) {
-    this._ui_lblCount = null;
+    this._lblCount = null;
+    this._btnIncrement = null;
+    this._btnDecrement = null;
+    this._btnReset = null;
     this._design = `
             <div class="counter-container">
                 <h1>TypeScript Counter</h1>
@@ -16,7 +19,12 @@ class CounterUI {
     this._container = container;
     this._counter = counter;
     this._container.innerHTML = this._design;
-    this._ui_lblCount = this.getUIElementById("count-display");
+    console.log("Counter UI initialized");
+    this._lblCount = this.getUIElementById("count-display");
+    this._btnIncrement = this.getUIElementById("increment-btn");
+    this._btnDecrement = this.getUIElementById("decrement-btn");
+    this._btnReset = this.getUIElementById("reset-btn");
+    console.log("Buttons initialized:", this._btnIncrement, this._btnDecrement, this._btnReset);
     this.updateUI();
     this.setupEventListeners();
     this.setupCounterEventHandlers();
@@ -26,21 +34,12 @@ class CounterUI {
   }
   /** Event handlers **/
   setupEventListeners() {
-    const btnIncrement = this.getUIElementById("increment-btn");
-    const btnDecrement = this.getUIElementById("decrement-btn");
-    const btnReset = this.getUIElementById("reset-btn");
-    if (btnIncrement) {
-      btnIncrement.addEventListener("click", this.handleIncrement.bind(this));
-    }
-    if (btnDecrement) {
-      btnDecrement.addEventListener("click", this.handleDecrement.bind(this));
-    }
-    if (btnReset) {
-      btnReset.addEventListener("click", this.handleReset.bind(this));
-    }
+    this._btnIncrement?.addEventListener("click", this.handleIncrement.bind(this));
+    this._btnDecrement?.addEventListener("click", this.handleDecrement.bind(this));
+    this._btnReset?.addEventListener("click", this.handleReset.bind(this));
   }
   setupCounterEventHandlers() {
-    this._counter.addEventListener("change", this.onChange.bind(this));
+    this._counter.addEventListener(this._counter.EVENT_CHANGE, this.onChange.bind(this));
   }
   handleIncrement() {
     const newCount = this._counter.increment();
@@ -61,8 +60,8 @@ class CounterUI {
   }
   /** Logic **/
   updateUI() {
-    if (!this._ui_lblCount) return;
-    this._ui_lblCount.textContent = this._counter.count.toString();
+    if (!this._lblCount) return;
+    this._lblCount.textContent = this._counter.count.toString();
   }
 }
 export {

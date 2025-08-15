@@ -3,11 +3,15 @@ class TaskUI {
   constructor(container, task) {
     this._lblTaskTitle = null;
     this._lblTaskDescription = null;
+    this._txtTaskTitle = null;
+    this._txtTaskDescription = null;
     this._design = `
             <div class="task-ui">
                 <h1>Task</h1>
                 <div id="task-title">NOT DEFINED</div>
-                <div id="task-description"></div
+                <input type="text" id="task-title-edit" />
+                <div id="task-description"></div>
+                <textarea id="task-description-edit"></textarea>
             </div>
         `;
     this._container = container;
@@ -15,18 +19,34 @@ class TaskUI {
     this._container.innerHTML = this._design;
     this._lblTaskTitle = this.getUIElementById("task-title");
     this._lblTaskDescription = this.getUIElementById("task-description");
+    this._txtTaskTitle = this.getUIInputElementById("task-title-edit");
+    this._txtTaskDescription = this.getUITextAreaElementById("task-description-edit");
     this.updateUI();
-    this.setupEventListeners();
-    this.setupCounterEventHandlers();
+    this.setupDOMEventListeners();
+    this.setupObjectEventHandlers();
   }
   getUIElementById(id) {
     return this._container.querySelector(`#${id}`);
   }
-  /** Event handlers **/
-  setupEventListeners() {
+  getUIInputElementById(id) {
+    return this._container.querySelector(`#${id}`);
   }
-  setupCounterEventHandlers() {
-    this._task.addEventListener("updated", this.onTaskUpdated.bind(this));
+  getUITextAreaElementById(id) {
+    return this._container.querySelector(`#${id}`);
+  }
+  /** Event handlers **/
+  setupDOMEventListeners() {
+    this._txtTaskTitle?.addEventListener("change", this.onTaskTitleChange.bind(this));
+    this._txtTaskDescription?.addEventListener("change", this.onTaskDescriptionChange.bind(this));
+  }
+  setupObjectEventHandlers() {
+    this._task.addEventListener(this._task.EVENT_UPDATED, this.onTaskUpdated.bind(this));
+  }
+  onTaskTitleChange(e) {
+    this._task.title = e.target.value;
+  }
+  onTaskDescriptionChange(e) {
+    this._task.description = e.target.value;
   }
   onTaskUpdated(e) {
     this.updateUI();

@@ -6,7 +6,10 @@ export class CounterUI {
     private _container: HTMLElement;
     private _counter: Counter;
 
-    private _ui_lblCount: HTMLElement | null = null;
+    private _lblCount: HTMLElement | null = null;
+    private _btnIncrement: HTMLElement | null = null;
+    private _btnDecrement: HTMLElement | null = null;
+    private _btnReset: HTMLElement | null = null;
 
     private _design: string = `
             <div class="counter-container">
@@ -27,9 +30,15 @@ export class CounterUI {
 
         // Render the counter UI
         this._container.innerHTML = this._design
+        console.log('Counter UI initialized');
 
         // Get the count display element
-        this._ui_lblCount = this.getUIElementById('count-display');
+        this._lblCount = this.getUIElementById('count-display');
+
+        this._btnIncrement = this.getUIElementById('increment-btn');
+        this._btnDecrement = this.getUIElementById('decrement-btn');
+        this._btnReset = this.getUIElementById('reset-btn');
+        console.log('Buttons initialized:', this._btnIncrement, this._btnDecrement, this._btnReset);
 
         // Initialize the display with current count
         this.updateUI();
@@ -45,26 +54,14 @@ export class CounterUI {
 
     /** Event handlers **/
     private setupEventListeners(): void {
-        const btnIncrement: HTMLElement | null = this.getUIElementById('increment-btn');
-        const btnDecrement: HTMLElement | null = this.getUIElementById('decrement-btn');
-        const btnReset: HTMLElement | null = this.getUIElementById('reset-btn');
-
-        if (btnIncrement) {
-            btnIncrement.addEventListener('click', this.handleIncrement.bind(this));
-        }
-
-        if (btnDecrement) {
-            btnDecrement.addEventListener('click', this.handleDecrement.bind(this));
-        }
-
-        if (btnReset) {
-            btnReset.addEventListener('click', this.handleReset.bind(this));
-        }
+        this._btnIncrement?.addEventListener('click', this.handleIncrement.bind(this));
+        this._btnDecrement?.addEventListener('click', this.handleDecrement.bind(this));
+        this._btnReset?.addEventListener('click', this.handleReset.bind(this));
     }
 
     private setupCounterEventHandlers(): void {
         // Use a single event listener for all counter events
-        this._counter.addEventListener('change', this.onChange.bind(this));
+        this._counter.addEventListener(this._counter.EVENT_CHANGE, this.onChange.bind(this));
     }
 
     private handleIncrement(): void {
@@ -85,16 +82,14 @@ export class CounterUI {
     private onChange(e: Event): void {
         console.log('Counter triggered');
         const [newValue] = (e as CustomEvent).detail;
-        console.log('Counter changed to: ',newValue);
+        console.log('Counter changed to: ', newValue);
     }
 
     /** Logic **/
 
     updateUI(): void {
-        if (!this._ui_lblCount) return;
-        this._ui_lblCount.textContent = this._counter.count.toString();
+        if (!this._lblCount) return;
+        this._lblCount.textContent = this._counter.count.toString();
     }
-
-
 
 }

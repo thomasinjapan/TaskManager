@@ -3,9 +3,14 @@ import { EventEmitter } from './EventHandling.js';
 
 export class Task extends EventEmitter {
     private _title: string;
-    private _description: string | null;
+    private _description: string;
 
-    constructor(initialTitle: string, initialDescription: string | null) {
+    /** list of all valid events **/
+    public EVENT_TITLE_UPDATED: string = 'title_updated';
+    public EVENT_DESCRIPTION_UPDATED: string = 'description_updated';
+    public EVENT_UPDATED: string = 'updated';
+
+    constructor(initialTitle: string, initialDescription: string) {
         super();
         this._title = initialTitle;
         this._description = initialDescription;
@@ -21,8 +26,8 @@ export class Task extends EventEmitter {
         this.emit('updated', []);
     }
 
-    get description(): string | null{
-        return this._description ;
+    get description(): string {
+        return this._description;
     }
 
     set description(value: string) {
@@ -30,5 +35,4 @@ export class Task extends EventEmitter {
         this.emit('description_updated', []);
         this.emit('updated', []);
     }
-
 }
