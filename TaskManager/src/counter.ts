@@ -1,6 +1,12 @@
 ﻿/**  src/counter.ts  **/
 import { EventEmitter } from './EventHandling.js';
 
+export namespace Counter {
+    export type payloadChanged = {
+        newCount: number;
+    };
+}
+
 export class Counter extends EventEmitter {
     private _count: number;
 
@@ -18,13 +24,13 @@ export class Counter extends EventEmitter {
 
     increment(): number {
         this._count += 1;
-        this.emit(this.EVENT_CHANGED, { newCount: this.count });
+        this.emit(this.EVENT_CHANGED, <Counter.payloadChanged>{ newCount: this.count });
         return this._count;
     }
 
     decrement(): number {
         this._count -= 1;
-        this.emit(this.EVENT_CHANGED, { newCount: this.count });
+        this.emit(this.EVENT_CHANGED, <Counter.payloadChanged>{ newCount: this.count });
         return this._count;
     }
 

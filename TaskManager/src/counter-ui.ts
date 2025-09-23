@@ -52,35 +52,35 @@ export class CounterUI {
 
     /** Event handlers **/
     private setupEventListeners(): void {
-        this._btnIncrement?.addEventListener('click', this.handleIncrement.bind(this));
-        this._btnDecrement?.addEventListener('click', this.handleDecrement.bind(this));
-        this._btnReset?.addEventListener('click', this.handleReset.bind(this));
+        this._btnIncrement?.addEventListener('click', this.onUIIncrement.bind(this));
+        this._btnDecrement?.addEventListener('click', this.onUIDecrement.bind(this));
+        this._btnReset?.addEventListener('click', this.onUIReset.bind(this));
     }
 
     private setupCounterEventHandlers(): void {
         // Use a single event listener for all counter events
-        this._counter.addEventListener(this._counter.EVENT_CHANGED, this.onChange.bind(this));
+        this._counter.addEventListener(this._counter.EVENT_CHANGED, this.onCounterChange.bind(this));
     }
 
-    private handleIncrement(): void {
+    private onUIIncrement(): void {
         const newCount = this._counter.increment();
         this.updateUI();
     }
 
-    private handleDecrement(): void {
+    private onUIDecrement(): void {
         const newCount = this._counter.decrement();
         this.updateUI();
     }
 
-    private handleReset(): void {
+    private onUIReset(): void {
         const newCount = this._counter.reset();
         this.updateUI();
     }
 
-    private onChange(e: Event): void {
-        const args = (e as CustomEvent).detail;
+    private onCounterChange(e: Event): void {
+        const args = <Counter.payloadChanged>(e as CustomEvent).detail;
         console.log('Counter triggered');
-        console.log('Counter changed to: ', args.newValue);
+        console.log('Counter changed to: ', args.newCount);
     }
 
     /** Logic **/

@@ -14,17 +14,17 @@ class Tasklist extends EventEmitter {
   }
   set title(value) {
     this._title = value;
-    this.emit(this.EVENT_TITLE_UPDATED, []);
+    this.emit(this.EVENT_TITLE_UPDATED, {});
   }
   addTask(task) {
     this._tasks.push(task);
-    this.emit(this.EVENT_TASK_ADDED, [task, this._tasks.length]);
+    this.emit(this.EVENT_TASK_ADDED, { newTask: task, newCount: this._tasks.length });
   }
   removeTask(task) {
     const index = this._tasks.indexOf(task);
     if (index !== -1) {
       this._tasks.splice(index, 1);
-      this.emit(this.EVENT_TASK_REMOVED, [task]);
+      this.emit(this.EVENT_TASK_REMOVED, { deletedTask: task });
     }
   }
 }

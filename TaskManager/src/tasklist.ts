@@ -2,6 +2,20 @@
 import { EventEmitter } from './EventHandling.js';
 import { Task } from './task.js'; 
 
+export namespace Tasklist {
+    export type payloadTitleupdated = {
+    }; 
+
+    export type payloadTaskAdded = {
+        newTask: Task,
+        newCount: number
+    };
+
+    export type payloadTaskRemoved = {
+        deletedTask: Task,
+    };
+}
+
 export class Tasklist extends EventEmitter {
     private _title: string;
     private _tasks: Task[] = [];
@@ -22,19 +36,19 @@ export class Tasklist extends EventEmitter {
 
     set title(value: string) {
         this._title = value;
-        this.emit(this.EVENT_TITLE_UPDATED, []);
+        this.emit(this.EVENT_TITLE_UPDATED, <Tasklist.payloadTitleupdated>{});
     }
 
     public addTask(task: Task): void {
         this._tasks.push(task);
-        this.emit(this.EVENT_TASK_ADDED, [task,this._tasks.length]);
+        this.emit(this.EVENT_TASK_ADDED, <Tasklist.payloadTaskAdded>{ newTask: task, newCount: this._tasks.length });
     }
 
     public removeTask(task: Task): void {
         const index = this._tasks.indexOf(task);
         if (index !== -1) {
             this._tasks.splice(index, 1);
-            this.emit(this.EVENT_TASK_REMOVED, [task]);
+            this.emit(this.EVENT_TASK_REMOVED, <Tasklist.payloadTaskRemoved>{deletedTask:task});
         }
     }
 }
