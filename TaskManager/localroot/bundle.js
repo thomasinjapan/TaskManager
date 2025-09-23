@@ -2,8 +2,8 @@
 (() => {
   // src/EventHandling.ts
   var EventEmitter = class extends EventTarget {
-    emit(type, args) {
-      this.dispatchEvent(new CustomEvent(type, { detail: args }));
+    emit(type, detail) {
+      this.dispatchEvent(new CustomEvent(type, { detail }));
     }
   };
 
@@ -20,12 +20,12 @@
     }
     increment() {
       this._count += 1;
-      this.emit(this.EVENT_CHANGED, [this.count]);
+      this.emit(this.EVENT_CHANGED, { newCount: this.count });
       return this._count;
     }
     decrement() {
       this._count -= 1;
-      this.emit(this.EVENT_CHANGED, [this.count]);
+      this.emit(this.EVENT_CHANGED, { newCount: this.count });
       return this._count;
     }
     reset() {
@@ -50,16 +50,16 @@
     }
     set title(value) {
       this._title = value;
-      this.emit(this.EVENT_TITLE_UPDATED, []);
-      this.emit(this.EVENT_UPDATED, []);
+      this.emit(this.EVENT_TITLE_UPDATED, {});
+      this.emit(this.EVENT_UPDATED, {});
     }
     get description() {
       return this._description;
     }
     set description(value) {
       this._description = value;
-      this.emit(this.EVENT_DESCRIPTION_UPDATED, []);
-      this.emit(this.EVENT_UPDATED, []);
+      this.emit(this.EVENT_DESCRIPTION_UPDATED, { description: this._description });
+      this.emit(this.EVENT_UPDATED, {});
     }
   };
 
@@ -118,9 +118,9 @@
       this.updateUI();
     }
     onChange(e) {
+      const args = e.detail;
       console.log("Counter triggered");
-      const [newValue] = e.detail;
-      console.log("Counter changed to: ", newValue);
+      console.log("Counter changed to: ", args.newValue);
     }
     /** Logic **/
     updateUI() {
@@ -162,17 +162,22 @@
     }
     /** Event handlers **/
     setupDOMEventListeners() {
-      this._txtTaskTitle?.addEventListener("change", this.onTaskTitleChange.bind(this));
-      this._txtTaskDescription?.addEventListener("change", this.onTaskDescriptionChange.bind(this));
+      this._txtTaskTitle?.addEventListener("change", this.onTaskTitleChangeUI.bind(this));
+      this._txtTaskDescription?.addEventListener("change", this.onTaskDescriptionChangeUI.bind(this));
     }
     setupObjectEventHandlers() {
       this._task.addEventListener(this._task.EVENT_UPDATED, this.onTaskUpdated.bind(this));
+      this._task.addEventListener(this._task.EVENT_DESCRIPTION_UPDATED, this.onTaskDescriptionUpdated.bind(this));
     }
-    onTaskTitleChange(e) {
+    onTaskTitleChangeUI(e) {
       this._task.title = e.target.value;
     }
-    onTaskDescriptionChange(e) {
+    onTaskDescriptionChangeUI(e) {
       this._task.description = e.target.value;
+    }
+    onTaskDescriptionUpdated(e) {
+      var args = e.detail;
+      console.log(`Task description was updated: ` + args.description);
     }
     onTaskUpdated(e) {
       this.updateUI();

@@ -11,12 +11,12 @@ class Counter extends EventEmitter {
   }
   increment() {
     this._count += 1;
-    this.emit(this.EVENT_CHANGED, [this.count]);
+    this.emit(this.EVENT_CHANGED, { newCount: this.count });
     return this._count;
   }
   decrement() {
     this._count -= 1;
-    this.emit(this.EVENT_CHANGED, [this.count]);
+    this.emit(this.EVENT_CHANGED, { newCount: this.count });
     return this._count;
   }
   reset() {

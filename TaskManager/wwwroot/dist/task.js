@@ -14,16 +14,16 @@ class Task extends EventEmitter {
   }
   set title(value) {
     this._title = value;
-    this.emit(this.EVENT_TITLE_UPDATED, []);
-    this.emit(this.EVENT_UPDATED, []);
+    this.emit(this.EVENT_TITLE_UPDATED, {});
+    this.emit(this.EVENT_UPDATED, {});
   }
   get description() {
     return this._description;
   }
   set description(value) {
     this._description = value;
-    this.emit(this.EVENT_DESCRIPTION_UPDATED, []);
-    this.emit(this.EVENT_UPDATED, []);
+    this.emit(this.EVENT_DESCRIPTION_UPDATED, { description: this._description });
+    this.emit(this.EVENT_UPDATED, {});
   }
 }
 export {

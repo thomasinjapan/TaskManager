@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../src/EventHandling.ts"],
-  "sourcesContent": ["\uFEFF/** src/eventemitter.ts **/\r\nexport class EventEmitter extends EventTarget {\r\n    protected emit(type: string, args: unknown[]): void {\r\n        this.dispatchEvent(new CustomEvent(type, { detail: args }));\r\n    }\r\n}"],
-  "mappings": "AACO,MAAM,qBAAqB,YAAY;AAAA,EAChC,KAAK,MAAc,MAAuB;AAChD,SAAK,cAAc,IAAI,YAAY,MAAM,EAAE,QAAQ,KAAK,CAAC,CAAC;AAAA,EAC9D;AACJ;",
+  "sourcesContent": ["\uFEFF/** src/eventemitter.ts **/\r\nexport class EventEmitter extends EventTarget {\r\n    protected emit<T>(type: string, detail: T): void {\r\n        this.dispatchEvent(new CustomEvent<T>(type, {detail}));\r\n    }\r\n}"],
+  "mappings": "AACO,MAAM,qBAAqB,YAAY;AAAA,EAChC,KAAQ,MAAc,QAAiB;AAC7C,SAAK,cAAc,IAAI,YAAe,MAAM,EAAC,OAAM,CAAC,CAAC;AAAA,EACzD;AACJ;",
   "names": []
 }

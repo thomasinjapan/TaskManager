@@ -1,6 +1,12 @@
 ﻿/**  src/Task.ts  **/
 import { EventEmitter } from './EventHandling.js';
 
+export namespace Task {
+    export type structPayloadDescription = {
+        description: string;
+    };
+}
+
 export class Task extends EventEmitter {
     private _title: string;
     private _description: string;
@@ -9,7 +15,7 @@ export class Task extends EventEmitter {
     public EVENT_TITLE_UPDATED: string = 'title_updated';
     public EVENT_DESCRIPTION_UPDATED: string = 'description_updated';
     public EVENT_UPDATED: string = 'updated';
-
+  
     constructor(initialTitle: string, initialDescription: string) {
         super();
         this._title = initialTitle;
@@ -22,8 +28,8 @@ export class Task extends EventEmitter {
 
     set title(value: string) {
         this._title = value;
-        this.emit(this.EVENT_TITLE_UPDATED, []);
-        this.emit(this.EVENT_UPDATED, []);
+        this.emit(this.EVENT_TITLE_UPDATED, {});
+        this.emit(this.EVENT_UPDATED, {});
     }
 
     get description(): string {
@@ -32,7 +38,7 @@ export class Task extends EventEmitter {
 
     set description(value: string) {
         this._description = value;
-        this.emit(this.EVENT_DESCRIPTION_UPDATED, []);
-        this.emit(this.EVENT_UPDATED, []);
+        this.emit(this.EVENT_DESCRIPTION_UPDATED, { description: this._description } as Task.structPayloadDescription);
+        this.emit(this.EVENT_UPDATED, {});
     }
 }
