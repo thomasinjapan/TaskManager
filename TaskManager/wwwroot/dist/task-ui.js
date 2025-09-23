@@ -30,17 +30,22 @@ class TaskUI {
   }
   /** Event handlers **/
   setupDOMEventListeners() {
-    this._txtTaskTitle?.addEventListener("change", this.onTaskTitleChange.bind(this));
-    this._txtTaskDescription?.addEventListener("change", this.onTaskDescriptionChange.bind(this));
+    this._txtTaskTitle?.addEventListener("change", this.onTaskTitleChangeUI.bind(this));
+    this._txtTaskDescription?.addEventListener("change", this.onTaskDescriptionChangeUI.bind(this));
   }
   setupObjectEventHandlers() {
     this._task.addEventListener(this._task.EVENT_UPDATED, this.onTaskUpdated.bind(this));
+    this._task.addEventListener(this._task.EVENT_DESCRIPTION_UPDATED, this.onTaskDescriptionUpdated.bind(this));
   }
-  onTaskTitleChange(e) {
+  onTaskTitleChangeUI(e) {
     this._task.title = e.target.value;
   }
-  onTaskDescriptionChange(e) {
+  onTaskDescriptionChangeUI(e) {
     this._task.description = e.target.value;
+  }
+  onTaskDescriptionUpdated(e) {
+    var args = e.detail;
+    console.log(`Task description was updated: ` + args.description);
   }
   onTaskUpdated(e) {
     this.updateUI();

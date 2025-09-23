@@ -52,9 +52,9 @@ class CounterUI {
     this.updateUI();
   }
   onChange(e) {
+    const args = e.detail;
     console.log("Counter triggered");
-    const [newValue] = e.detail;
-    console.log("Counter changed to: ", newValue);
+    console.log("Counter changed to: ", args.newValue);
   }
   /** Logic **/
   updateUI() {

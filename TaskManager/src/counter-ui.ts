@@ -78,9 +78,9 @@ export class CounterUI {
     }
 
     private onChange(e: Event): void {
+        const args = (e as CustomEvent).detail;
         console.log('Counter triggered');
-        const [newValue] = (e as CustomEvent).detail;
-        console.log('Counter changed to: ', newValue);
+        console.log('Counter changed to: ', args.newValue);
     }
 
     /** Logic **/
@@ -89,5 +89,5 @@ export class CounterUI {
         if (!this._lblCount) return;
         this._lblCount.textContent = this._counter.count.toString();
     }
-
 }
+

@@ -18,13 +18,13 @@ export class Counter extends EventEmitter {
 
     increment(): number {
         this._count += 1;
-        this.emit(this.EVENT_CHANGED, [this.count]);
+        this.emit(this.EVENT_CHANGED, { newCount: this.count });
         return this._count;
     }
 
     decrement(): number {
         this._count -= 1;
-        this.emit(this.EVENT_CHANGED, [this.count]);
+        this.emit(this.EVENT_CHANGED, { newCount: this.count });
         return this._count;
     }
 

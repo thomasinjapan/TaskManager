@@ -1,6 +1,6 @@
 class EventEmitter extends EventTarget {
-  emit(type, args) {
-    this.dispatchEvent(new CustomEvent(type, { detail: args }));
+  emit(type, detail) {
+    this.dispatchEvent(new CustomEvent(type, { detail }));
   }
 }
 export {

@@ -51,21 +51,27 @@ export class TaskUI {
 
     /** Event handlers **/
     private setupDOMEventListeners(): void {
-        this._txtTaskTitle?.addEventListener('change', this.onTaskTitleChange.bind(this));
-        this._txtTaskDescription?.addEventListener('change', this.onTaskDescriptionChange.bind(this));
+        this._txtTaskTitle?.addEventListener('change', this.onTaskTitleChangeUI.bind(this));
+        this._txtTaskDescription?.addEventListener('change', this.onTaskDescriptionChangeUI.bind(this));
     }
 
     private setupObjectEventHandlers(): void {
-        // Use a single event listener for all counter events
         this._task.addEventListener(this._task.EVENT_UPDATED, this.onTaskUpdated.bind(this));
+        //this._task.addEventListener(this._task.EVENT_TITLE_UPDATED, this.onTaskUpdated.bind(this));
+        this._task.addEventListener(this._task.EVENT_DESCRIPTION_UPDATED, this.onTaskDescriptionUpdated.bind(this));
     }
 
-    private onTaskTitleChange(e: Event): void {
+    private onTaskTitleChangeUI(e: Event): void {
         this._task.title = (e.target as HTMLInputElement).value;
     }
 
-    private onTaskDescriptionChange(e: Event): void {
+    private onTaskDescriptionChangeUI(e: Event): void {
         this._task.description = (e.target as HTMLTextAreaElement).value;
+    }
+
+    private onTaskDescriptionUpdated(e: Event): void {
+        var args = (e as CustomEvent<any>).detail as Task.structPayloadDescription ;
+        console.log(`Task description was updated: ` + args.description);
     }
 
     private onTaskUpdated(e: Event): void {
