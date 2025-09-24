@@ -71,8 +71,8 @@
       this._btnIncrement = null;
       this._btnDecrement = null;
       this._btnReset = null;
+      this._cssClass = `counter-container`;
       this._design = `
-            <div class="counter-container">
                 <h1>TypeScript Counter</h1>
                 <div id="lblCount">0</div>
                 <div>
@@ -80,11 +80,11 @@
                     <button id="cmdReset">Reset</button>
                     <button id="cmdIncrement">Increment</button>
                 </div>
-            </div>
-        `;
+         `;
       this._container = container;
       this._counter = counter;
       this._container.innerHTML = this._design;
+      this._cssClass ? this._container.classList.add(this._cssClass) : null;
       this._lblCount = this.getUIElementById("lblCount");
       this._btnIncrement = this.getUIElementById("cmdIncrement");
       this._btnDecrement = this.getUIElementById("cmdDecrement");
@@ -137,18 +137,19 @@
       this._lblTaskDescription = null;
       this._txtTaskTitle = null;
       this._txtTaskDescription = null;
+      /** design info **/
+      this._cssClass = "";
       this._design = `
-            <div class="task-ui">
-                <h1>Task</h1>
-                <div id="lblTaskTitle">NOT DEFINED</div>
-                <input type="text" id="txtTaskTitle" />
-                <div id="lblTaskDescription"></div>
-                <textarea id="txtTaskDescription"></textarea>
-            </div>
+            <h1>Task</h1>
+            <div id="lblTaskTitle">NOT DEFINED</div>
+            <input type="text" id="txtTaskTitle" />
+            <div id="lblTaskDescription"></div>
+            <textarea id="txtTaskDescription"></textarea>
         `;
       this._container = container;
       this._task = task;
       this._container.innerHTML = this._design;
+      this._cssClass ? this._container.classList.add(this._cssClass) : null;
       this._lblTaskTitle = this.getUIElementById("lblTaskTitle");
       this._lblTaskDescription = this.getUIElementById("lblTaskDescription");
       this._txtTaskTitle = this.getUIElementById("txtTaskTitle");
@@ -158,6 +159,9 @@
       this.setupObjectEventHandlers();
     }
     getUIElementById(id) {
+      var containerr = this._container.querySelector(`#${id}`);
+      console.log(`root container: `, this._container);
+      console.log(`Searching for element with id '${id}' in container: `, containerr);
       return this._container.querySelector(`#${id}`);
     }
     /** Event handlers **/

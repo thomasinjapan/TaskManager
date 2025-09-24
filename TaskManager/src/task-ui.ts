@@ -11,24 +11,25 @@ export class TaskUI {
     private _txtTaskTitle: HTMLInputElement | null = null;
     private _txtTaskDescription: HTMLTextAreaElement | null = null;
 
+    /** design info **/
+    private _cssClass: string = 'task-ui';
     private _design: string = `
-            <div class="task-ui">
-                <h1>Task</h1>
-                <div id="lblTaskTitle">NOT DEFINED</div>
-                <input type="text" id="txtTaskTitle" />
-                <div id="lblTaskDescription"></div>
-                <textarea id="txtTaskDescription"></textarea>
-            </div>
+            <h1>Task</h1>
+            <div id="lblTaskTitle">NOT DEFINED</div>
+            <input type="text" id="txtTaskTitle" />
+            <div id="lblTaskDescription"></div>
+            <textarea id="txtTaskDescription"></textarea>
         `;
-
 
     /** Constructor and UI **/
     constructor(container: HTMLElement, task: Task) {
         this._container = container;
         this._task = task;
 
-        // Render the counter UI
+        // Render the counter 
         this._container.innerHTML = this._design
+        this._cssClass ? this._container.classList.add(this._cssClass) : null;
+ 
 
         // Get the display elements to interact with
         this._lblTaskTitle = this.getUIElementById<HTMLElement>('lblTaskTitle')
@@ -46,6 +47,10 @@ export class TaskUI {
     }
 
     private getUIElementById<T extends HTMLElement>(id: string): T | null {
+        var containerr: HTMLElement | null = this._container.querySelector(`#${id}`);
+        console.log(`root container: `, this._container)
+        console.log(`Searching for element with id '${id}' in container: `, containerr);
+
         return this._container.querySelector(`#${id}`) as T | null;
     }
 
@@ -70,7 +75,7 @@ export class TaskUI {
     }
 
     private onTaskDescriptionUpdated(e: Event): void {
-        var args = (e as CustomEvent<any>).detail as Task.structPayloadDescription ;
+        var args = (e as CustomEvent<any>).detail as Task.structPayloadDescription;
         console.log(`Task description was updated: ` + args.description);
     }
 

@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../src/bootstrapper.ts"],
-  "sourcesContent": ["\uFEFF/**  src/bootstrapper.ts  **/\n\nimport { App } from './app.js';\n\n// Wait for DOM to be fully loaded\nfunction initializeApp(): void {\n    const appContainer = document.getElementById('bootstrapper') as HTMLElement;\n    if (!appContainer) {\n        throw new Error('App container not found');\n    }\n    console.log('App container found:', appContainer);\n\n    // Initialize counter and counter UI\n    const bootstrapper = new App(appContainer);\n}\n\ndocument.addEventListener('DOMContentLoaded', initializeApp);"],
+  "sourcesContent": ["\uFEFF/**  src/bootstrapper.ts  **/\r\n\r\nimport { App } from './app.js';\r\n\r\n// Wait for DOM to be fully loaded\r\nfunction initializeApp(): void {\r\n    const appContainer = document.getElementById('bootstrapper') as HTMLElement;\r\n    if (!appContainer) {\r\n        throw new Error('App container not found');\r\n    }\r\n    console.log('App container found:', appContainer);\r\n\r\n    // Initialize counter and counter UI\r\n    const bootstrapper = new App(appContainer);\r\n}\r\n\r\ndocument.addEventListener('DOMContentLoaded', initializeApp);"],
   "mappings": "AAEA,SAAS,WAAW;AAGpB,SAAS,gBAAsB;AAC3B,QAAM,eAAe,SAAS,eAAe,cAAc;AAC3D,MAAI,CAAC,cAAc;AACf,UAAM,IAAI,MAAM,yBAAyB;AAAA,EAC7C;AACA,UAAQ,IAAI,wBAAwB,YAAY;AAGhD,QAAM,eAAe,IAAI,IAAI,YAAY;AAC7C;AAEA,SAAS,iBAAiB,oBAAoB,aAAa;",
   "names": []
 }

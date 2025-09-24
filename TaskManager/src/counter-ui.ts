@@ -13,7 +13,6 @@ export class CounterUI {
 
     private _cssClass: string = `counter-container`;
     private _design: string = `
-            <div class="counter-container">
                 <h1>TypeScript Counter</h1>
                 <div id="lblCount">0</div>
                 <div>
@@ -21,8 +20,7 @@ export class CounterUI {
                     <button id="cmdReset">Reset</button>
                     <button id="cmdIncrement">Increment</button>
                 </div>
-            </div>
-        `;
+         `;
 
     /** Constructor and UI **/
     constructor(container: HTMLElement, counter: Counter) {
@@ -31,7 +29,8 @@ export class CounterUI {
 
         // Render the counter UI
         this._container.innerHTML = this._design
-        
+        this._cssClass ? this._container.classList.add(this._cssClass) : null;
+
         // Get the count display element
         this._lblCount = this.getUIElementById('lblCount');
 
