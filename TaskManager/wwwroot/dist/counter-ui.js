@@ -1,6 +1,8 @@
-class CounterUI {
+import { BaseUI } from "./baseui.js";
+class CounterUI extends BaseUI {
   /** Constructor and UI **/
   constructor(container, counter) {
+    super(container);
     this._lblCount = null;
     this._btnIncrement = null;
     this._btnDecrement = null;
@@ -15,10 +17,8 @@ class CounterUI {
                     <button id="cmdIncrement">Increment</button>
                 </div>
          `;
-    this._container = container;
+    this.initializeUI();
     this._counter = counter;
-    this._container.innerHTML = this._design;
-    this._cssClass ? this._container.classList.add(this._cssClass) : null;
     this._lblCount = this.getUIElementById("lblCount");
     this._btnIncrement = this.getUIElementById("cmdIncrement");
     this._btnDecrement = this.getUIElementById("cmdDecrement");
@@ -26,9 +26,6 @@ class CounterUI {
     this.updateUI();
     this.setupEventListeners();
     this.setupCounterEventHandlers();
-  }
-  getUIElementById(id) {
-    return this._container.querySelector(`#${id}`);
   }
   /** Event handlers **/
   setupEventListeners() {

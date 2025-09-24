@@ -1,8 +1,8 @@
 ﻿/**  src/task-ui.ts  **/
-import { BaseUI } from './baseui.js';
 import { Task } from './task.js';
 
-export class TaskUI extends BaseUI {
+export class TaskUI {
+    private _container: HTMLElement;
     private _task: Task;
 
     private _lblTaskTitle: HTMLElement | null = null
@@ -12,8 +12,8 @@ export class TaskUI extends BaseUI {
     private _txtTaskDescription: HTMLTextAreaElement | null = null;
 
     /** design info **/
-    _cssClass: string = 'task-ui';
-    _design: string = `
+    private _cssClass: string = 'task-ui';
+    private _design: string = `
             <h1>Task</h1>
             <div id="lblTaskTitle">NOT DEFINED</div>
             <input type="text" id="txtTaskTitle" />
@@ -23,14 +23,13 @@ export class TaskUI extends BaseUI {
 
     /** Constructor and UI **/
     constructor(container: HTMLElement, task: Task) {
-        super(container);
-        this.initializeUI();
+        this._container = container;
         this._task = task;
 
         // Render the counter 
         this._container.innerHTML = this._design
         this._cssClass ? this._container.classList.add(this._cssClass) : null;
-
+ 
 
         // Get the display elements to interact with
         this._lblTaskTitle = this.getUIElementById<HTMLElement>('lblTaskTitle')
@@ -45,6 +44,14 @@ export class TaskUI extends BaseUI {
         // Setup event listeners
         this.setupDOMEventListeners();
         this.setupObjectEventHandlers();
+    }
+
+    private getUIElementById<T extends HTMLElement>(id: string): T | null {
+        var containerr: HTMLElement | null = this._container.querySelector(`#${id}`);
+        console.log(`root container: `, this._container)
+        console.log(`Searching for element with id '${id}' in container: `, containerr);
+
+        return this._container.querySelector(`#${id}`) as T | null;
     }
 
     /** Event handlers **/

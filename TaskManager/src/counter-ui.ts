@@ -1,9 +1,9 @@
 ﻿/**  src/counter-ui.ts  **/
+import { BaseUI } from './baseui.js';
 import { Counter } from './counter.js';
 
 // UI class for Counter component
-export class CounterUI {
-    private _container: HTMLElement;
+export class CounterUI extends BaseUI {
     private _counter: Counter;
 
     private _lblCount: HTMLElement | null = null;
@@ -11,8 +11,8 @@ export class CounterUI {
     private _btnDecrement: HTMLElement | null = null;
     private _btnReset: HTMLElement | null = null;
 
-    private _cssClass: string = `counter-container`;
-    private _design: string = `
+     _cssClass: string = `counter-container`;
+     _design: string = `
                 <h1>TypeScript Counter</h1>
                 <div id="lblCount">0</div>
                 <div>
@@ -24,12 +24,12 @@ export class CounterUI {
 
     /** Constructor and UI **/
     constructor(container: HTMLElement, counter: Counter) {
-        this._container = container;
-        this._counter = counter;
+        /** initialize UI **/
+        super(container);
+        this.initializeUI();
 
-        // Render the counter UI
-        this._container.innerHTML = this._design
-        this._cssClass ? this._container.classList.add(this._cssClass) : null;
+        // get all objects
+        this._counter = counter;
 
         // Get the count display element
         this._lblCount = this.getUIElementById('lblCount');
@@ -44,10 +44,6 @@ export class CounterUI {
         // Setup event listeners
         this.setupEventListeners();
         this.setupCounterEventHandlers();
-    }
-
-    private getUIElementById<T extends HTMLElement>(id: string): T | null {
-        return this._container.querySelector(`#${id}`) as T | null;
     }
 
     /** Event handlers **/

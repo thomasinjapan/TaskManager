@@ -1,8 +1,6 @@
-import { BaseUI } from "./baseui.js";
-class TaskUI extends BaseUI {
+class TaskUI {
   /** Constructor and UI **/
   constructor(container, task) {
-    super(container);
     this._lblTaskTitle = null;
     this._lblTaskDescription = null;
     this._txtTaskTitle = null;
@@ -16,7 +14,7 @@ class TaskUI extends BaseUI {
             <div id="lblTaskDescription"></div>
             <textarea id="txtTaskDescription"></textarea>
         `;
-    this.initializeUI();
+    this._container = container;
     this._task = task;
     this._container.innerHTML = this._design;
     this._cssClass ? this._container.classList.add(this._cssClass) : null;
@@ -27,6 +25,12 @@ class TaskUI extends BaseUI {
     this.updateUI();
     this.setupDOMEventListeners();
     this.setupObjectEventHandlers();
+  }
+  getUIElementById(id) {
+    var containerr = this._container.querySelector(`#${id}`);
+    console.log(`root container: `, this._container);
+    console.log(`Searching for element with id '${id}' in container: `, containerr);
+    return this._container.querySelector(`#${id}`);
   }
   /** Event handlers **/
   setupDOMEventListeners() {
@@ -61,4 +65,4 @@ class TaskUI extends BaseUI {
 export {
   TaskUI
 };
-//# sourceMappingURL=task-ui.js.map
+//# sourceMappingURL=task-ui%20-%20Copy.js.map

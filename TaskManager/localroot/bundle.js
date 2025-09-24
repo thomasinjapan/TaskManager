@@ -63,10 +63,36 @@
     }
   };
 
+  // src/baseui.ts
+  var BaseUI = class {
+    /** Constructor and UI **/
+    constructor(container) {
+      /** design info **/
+      this._cssClass = "";
+      this._design = "";
+      this._container = container;
+    }
+    /** Logic **/
+    /** initializes the UI with current design and css class info*/
+    initializeUI() {
+      this._container.innerHTML = this._design;
+      this._cssClass ? this._container.classList.add(this._cssClass) : null;
+    }
+    /**
+     * gets html element by id from the container
+     * @param id id of the element to get
+     * @returns element with the specified id or null if not found
+     */
+    getUIElementById(id) {
+      return this._container.querySelector(`#${id}`);
+    }
+  };
+
   // src/counter-ui.ts
-  var CounterUI = class {
+  var CounterUI = class extends BaseUI {
     /** Constructor and UI **/
     constructor(container, counter) {
+      super(container);
       this._lblCount = null;
       this._btnIncrement = null;
       this._btnDecrement = null;
@@ -81,10 +107,8 @@
                     <button id="cmdIncrement">Increment</button>
                 </div>
          `;
-      this._container = container;
+      this.initializeUI();
       this._counter = counter;
-      this._container.innerHTML = this._design;
-      this._cssClass ? this._container.classList.add(this._cssClass) : null;
       this._lblCount = this.getUIElementById("lblCount");
       this._btnIncrement = this.getUIElementById("cmdIncrement");
       this._btnDecrement = this.getUIElementById("cmdDecrement");
@@ -92,9 +116,6 @@
       this.updateUI();
       this.setupEventListeners();
       this.setupCounterEventHandlers();
-    }
-    getUIElementById(id) {
-      return this._container.querySelector(`#${id}`);
     }
     /** Event handlers **/
     setupEventListeners() {
@@ -130,15 +151,16 @@
   };
 
   // src/task-ui.ts
-  var TaskUI = class {
+  var TaskUI = class extends BaseUI {
     /** Constructor and UI **/
     constructor(container, task) {
+      super(container);
       this._lblTaskTitle = null;
       this._lblTaskDescription = null;
       this._txtTaskTitle = null;
       this._txtTaskDescription = null;
       /** design info **/
-      this._cssClass = "";
+      this._cssClass = "task-ui";
       this._design = `
             <h1>Task</h1>
             <div id="lblTaskTitle">NOT DEFINED</div>
@@ -146,7 +168,7 @@
             <div id="lblTaskDescription"></div>
             <textarea id="txtTaskDescription"></textarea>
         `;
-      this._container = container;
+      this.initializeUI();
       this._task = task;
       this._container.innerHTML = this._design;
       this._cssClass ? this._container.classList.add(this._cssClass) : null;
@@ -157,12 +179,6 @@
       this.updateUI();
       this.setupDOMEventListeners();
       this.setupObjectEventHandlers();
-    }
-    getUIElementById(id) {
-      var containerr = this._container.querySelector(`#${id}`);
-      console.log(`root container: `, this._container);
-      console.log(`Searching for element with id '${id}' in container: `, containerr);
-      return this._container.querySelector(`#${id}`);
     }
     /** Event handlers **/
     setupDOMEventListeners() {
