@@ -5,8 +5,8 @@ class CounterUI {
     this._btnIncrement = null;
     this._btnDecrement = null;
     this._btnReset = null;
+      this._cssClass = `counter-container`;
     this._design = `
-            <div class="counter-container">
                 <h1>TypeScript Counter</h1>
                 <div id="lblCount">0</div>
                 <div>
@@ -14,11 +14,11 @@ class CounterUI {
                     <button id="cmdReset">Reset</button>
                     <button id="cmdIncrement">Increment</button>
                 </div>
-            </div>
         `;
     this._container = container;
     this._counter = counter;
     this._container.innerHTML = this._design;
+        this._cssClass ? this._container.classList.add(this._cssClass) : null;
     this._lblCount = this.getUIElementById("lblCount");
     this._btnIncrement = this.getUIElementById("cmdIncrement");
     this._btnDecrement = this.getUIElementById("cmdDecrement");

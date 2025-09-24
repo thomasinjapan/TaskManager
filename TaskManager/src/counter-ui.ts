@@ -11,6 +11,7 @@ export class CounterUI {
     private _btnDecrement: HTMLElement | null = null;
     private _btnReset: HTMLElement | null = null;
 
+    private _cssClass: string = `counter-container`;
     private _design: string = `
             <div class="counter-container">
                 <h1>TypeScript Counter</h1>
