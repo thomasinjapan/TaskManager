@@ -3,7 +3,7 @@
 export class BaseUI {
     _container: HTMLElement;
 
-    /** design info **/
+    /** dummy design info to be sure that it is available in UI initialization when called**/
     _cssClass: string = '';
     _design: string = '';
 

@@ -1,5 +1,5 @@
 ﻿/**  src/task-ui.ts  **/
-import { BaseUI } from './baseui.js';
+import { BaseUI } from './baseclasses/baseui.js';
 import { Task } from './task.js';
 
 export class TaskUI extends BaseUI {

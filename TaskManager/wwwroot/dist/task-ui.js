@@ -1,4 +1,4 @@
-import { BaseUI } from "./baseui.js";
+import { BaseUI } from "./baseclasses/baseui.js";
 class TaskUI extends BaseUI {
   /** Constructor and UI **/
   constructor(container, task) {

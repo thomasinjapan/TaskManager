@@ -1,5 +1,5 @@
 ﻿/**  src/counter-ui.ts  **/
-import { BaseUI } from './baseui.js';
+import { BaseUI } from './baseclasses/baseui.js';
 import { Counter } from './counter.js';
 
 // UI class for Counter component
@@ -24,9 +24,10 @@ export class CounterUI extends BaseUI {
 
     /** Constructor and UI **/
     constructor(container: HTMLElement, counter: Counter) {
-        /** initialize UI **/
+        /** start initialize UI - dont change**/
         super(container);
         this.initializeUI();
+        /** end initialize UI **/
 
         // get all objects
         this._counter = counter;
