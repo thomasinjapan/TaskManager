@@ -1,9 +1,11 @@
 ﻿/**  src/counter.ts  **/
-import { EventEmitter } from './EventHandling.js';
+import { EventEmitter } from './baseclasses/EventHandling.js';
 
 export namespace Counter {
     export type payloadChanged = {
+        oldCount: number;
         newCount: number;
+        delta: number;
     };
 }
 
@@ -24,18 +26,20 @@ export class Counter extends EventEmitter {
 
     increment(): number {
         this._count += 1;
-        this.emit(this.EVENT_CHANGED, <Counter.payloadChanged>{ newCount: this.count });
+        this.emit(this.EVENT_CHANGED, <Counter.payloadChanged>{ newCount: this.count , oldCount: this.count-1, delta: 1});
         return this._count;
     }
 
     decrement(): number {
         this._count -= 1;
-        this.emit(this.EVENT_CHANGED, <Counter.payloadChanged>{ newCount: this.count });
+        this.emit(this.EVENT_CHANGED, <Counter.payloadChanged>{ newCount: this.count, oldCount: this.count + 1, delta: -1 });
         return this._count;
     }
 
     reset(): number {
+        var oldCount = this._count;
         this._count = 0;
+        this.emit(this.EVENT_CHANGED, <Counter.payloadChanged>{ newCount: this.count, oldCount: oldCount, delta: this.count-oldCount });
         return this._count;
     }
 }

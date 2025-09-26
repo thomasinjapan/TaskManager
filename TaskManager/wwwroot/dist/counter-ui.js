@@ -50,8 +50,10 @@ class CounterUI extends BaseUI {
   }
   onCounterChange(e) {
     const args = e.detail;
-    console.log("Counter triggered");
+    console.log("Counter changed");
+    console.log("Counter changed from : ", args.oldCount);
     console.log("Counter changed to: ", args.newCount);
+    console.log("Counter change delta: ", args.delta);
   }
   /** Logic **/
   updateUI() {

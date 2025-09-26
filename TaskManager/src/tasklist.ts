@@ -1,5 +1,5 @@
 ﻿/**  src/tasklist.ts  **/
-import { EventEmitter } from './EventHandling.js';
+import { EventEmitter } from './baseclasses/EventHandling.js';
 import { Task } from './task.js'; 
 
 export namespace Tasklist {

@@ -1,6 +1,6 @@
 "use strict";
 (() => {
-  // src/EventHandling.ts
+  // src/baseclasses/EventHandling.ts
   var EventEmitter = class extends EventTarget {
     emit(type, detail) {
       this.dispatchEvent(new CustomEvent(type, { detail }));
@@ -20,16 +20,18 @@
     }
     increment() {
       this._count += 1;
-      this.emit(this.EVENT_CHANGED, { newCount: this.count });
+      this.emit(this.EVENT_CHANGED, { newCount: this.count, oldCount: this.count - 1, delta: 1 });
       return this._count;
     }
     decrement() {
       this._count -= 1;
-      this.emit(this.EVENT_CHANGED, { newCount: this.count });
+      this.emit(this.EVENT_CHANGED, { newCount: this.count, oldCount: this.count + 1, delta: -1 });
       return this._count;
     }
     reset() {
+      var oldCount = this._count;
       this._count = 0;
+      this.emit(this.EVENT_CHANGED, { newCount: this.count, oldCount, delta: this.count - oldCount });
       return this._count;
     }
   };
@@ -67,7 +69,7 @@
   var BaseUI = class {
     /** Constructor and UI **/
     constructor(container) {
-      /** design info **/
+      /** dummy design info to be sure that it is available in UI initialization when called**/
       this._cssClass = "";
       this._design = "";
       this._container = container;
@@ -140,8 +142,10 @@
     }
     onCounterChange(e) {
       const args = e.detail;
-      console.log("Counter triggered");
+      console.log("Counter changed");
+      console.log("Counter changed from : ", args.oldCount);
       console.log("Counter changed to: ", args.newCount);
+      console.log("Counter change delta: ", args.delta);
     }
     /** Logic **/
     updateUI() {

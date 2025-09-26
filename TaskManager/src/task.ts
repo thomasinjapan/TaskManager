@@ -1,5 +1,5 @@
 ﻿/**  src/Task.ts  **/
-import { EventEmitter } from './EventHandling.js';
+import { EventEmitter } from './baseclasses/EventHandling.js';
 
 export namespace Task {
     export type structPayloadDescription = {

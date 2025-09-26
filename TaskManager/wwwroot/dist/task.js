@@ -1,4 +1,4 @@
-import { EventEmitter } from "./EventHandling.js";
+import { EventEmitter } from "./baseclasses/EventHandling.js";
 class Task extends EventEmitter {
   constructor(initialTitle, initialDescription) {
     super();
