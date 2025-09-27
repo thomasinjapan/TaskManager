@@ -27,12 +27,7 @@ export class TaskUI extends BaseUI {
         this.initializeUI();
         this._task = task;
 
-        // Render the counter 
-        this._container.innerHTML = this._design
-        this._cssClass ? this._container.classList.add(this._cssClass) : null;
-
-
-        // Get the display elements to interact with
+       // Get the display elements to interact with
         this._lblTaskTitle = this.getUIElementById<HTMLElement>('lblTaskTitle')
         this._lblTaskDescription = this.getUIElementById<HTMLElement>('lblTaskDescription');
 
