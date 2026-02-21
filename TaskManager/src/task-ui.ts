@@ -50,7 +50,7 @@ export class TaskUI extends BaseUI {
 
     private setupObjectEventHandlers(): void {
         this._task.addEventListener(this._task.EVENT_UPDATED, this.onTaskUpdated.bind(this));
-        //this._task.addEventListener(this._task.EVENT_TITLE_UPDATED, this.onTaskUpdated.bind(this));
+        this._task.addEventListener(this._task.EVENT_TITLE_UPDATED, this.onTaskTitleUpdated.bind(this));
         this._task.addEventListener(this._task.EVENT_DESCRIPTION_UPDATED, this.onTaskDescriptionUpdated.bind(this));
     }
 
@@ -63,13 +63,18 @@ export class TaskUI extends BaseUI {
     }
 
     private onTaskDescriptionUpdated(e: Event): void {
-        var args = (e as CustomEvent<any>).detail as Task.structPayloadDescription;
-        console.log(`Task description was updated: ` + args.description);
+        var args = (e as CustomEvent<any>).detail as Task.event_payload_descriptionupdated;
+        console.log(`Task description was updated: from ` + args.description_old + ` to ` + args.description_new);
+    }
+
+    private onTaskTitleUpdated(e: Event): void {
+        var args = (e as CustomEvent<any>).detail as Task.event_payload_titleupdated;
+        console.log(`Task title was updated: from ` + args.title_old + ` to ` + args.title_new);
     }
 
     private onTaskUpdated(e: Event): void {
         this.updateUI();
-        console.log(`Task was updated`);
+        console.log(`Task updated`);
     }
 
     /** Logic **/

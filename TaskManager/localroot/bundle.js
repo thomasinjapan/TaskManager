@@ -47,20 +47,38 @@
       this._title = initialTitle;
       this._description = initialDescription;
     }
+    /**
+     * gets title of the task
+     * @returns Task 
+     */
     get title() {
       return this._title;
     }
+    /**
+     * sets title of of the task
+     * @param {number} value new title
+     * @returns nothing
+     * @emits title that was changed
+     * @emits info that event was updated
+     
+     */
     set title(value) {
+      var oldtitle = this._title;
+      var newtitle = value;
+      var payload = { title_new: newtitle, title_old: oldtitle };
       this._title = value;
-      this.emit(this.EVENT_TITLE_UPDATED, {});
+      this.emit(this.EVENT_TITLE_UPDATED, payload);
       this.emit(this.EVENT_UPDATED, {});
     }
     get description() {
       return this._description;
     }
     set description(value) {
+      var olddescription = this._description;
+      var newdescription = value;
+      var payload = { description_new: newdescription, description_old: olddescription };
       this._description = value;
-      this.emit(this.EVENT_DESCRIPTION_UPDATED, { description: this._description });
+      this.emit(this.EVENT_DESCRIPTION_UPDATED, payload);
       this.emit(this.EVENT_UPDATED, {});
     }
   };
@@ -174,8 +192,6 @@
         `;
       this.initializeUI();
       this._task = task;
-      this._container.innerHTML = this._design;
-      this._cssClass ? this._container.classList.add(this._cssClass) : null;
       this._lblTaskTitle = this.getUIElementById("lblTaskTitle");
       this._lblTaskDescription = this.getUIElementById("lblTaskDescription");
       this._txtTaskTitle = this.getUIElementById("txtTaskTitle");
@@ -191,6 +207,7 @@
     }
     setupObjectEventHandlers() {
       this._task.addEventListener(this._task.EVENT_UPDATED, this.onTaskUpdated.bind(this));
+      this._task.addEventListener(this._task.EVENT_TITLE_UPDATED, this.onTaskTitleUpdated.bind(this));
       this._task.addEventListener(this._task.EVENT_DESCRIPTION_UPDATED, this.onTaskDescriptionUpdated.bind(this));
     }
     onTaskTitleChangeUI(e) {
@@ -201,11 +218,15 @@
     }
     onTaskDescriptionUpdated(e) {
       var args = e.detail;
-      console.log(`Task description was updated: ` + args.description);
+      console.log(`Task description was updated: from ` + args.description_old + ` to ` + args.description_new);
+    }
+    onTaskTitleUpdated(e) {
+      var args = e.detail;
+      console.log(`Task title was updated: from ` + args.title_old + ` to ` + args.title_new);
     }
     onTaskUpdated(e) {
       this.updateUI();
-      console.log(`Task was updated`);
+      console.log(`Task updated`);
     }
     /** Logic **/
     updateUI() {

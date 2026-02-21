@@ -18,8 +18,6 @@ class TaskUI extends BaseUI {
         `;
     this.initializeUI();
     this._task = task;
-    this._container.innerHTML = this._design;
-    this._cssClass ? this._container.classList.add(this._cssClass) : null;
     this._lblTaskTitle = this.getUIElementById("lblTaskTitle");
     this._lblTaskDescription = this.getUIElementById("lblTaskDescription");
     this._txtTaskTitle = this.getUIElementById("txtTaskTitle");
@@ -35,6 +33,7 @@ class TaskUI extends BaseUI {
   }
   setupObjectEventHandlers() {
     this._task.addEventListener(this._task.EVENT_UPDATED, this.onTaskUpdated.bind(this));
+    this._task.addEventListener(this._task.EVENT_TITLE_UPDATED, this.onTaskTitleUpdated.bind(this));
     this._task.addEventListener(this._task.EVENT_DESCRIPTION_UPDATED, this.onTaskDescriptionUpdated.bind(this));
   }
   onTaskTitleChangeUI(e) {
@@ -45,11 +44,15 @@ class TaskUI extends BaseUI {
   }
   onTaskDescriptionUpdated(e) {
     var args = e.detail;
-    console.log(`Task description was updated: ` + args.description);
+    console.log(`Task description was updated: from ` + args.description_old + ` to ` + args.description_new);
+  }
+  onTaskTitleUpdated(e) {
+    var args = e.detail;
+    console.log(`Task title was updated: from ` + args.title_old + ` to ` + args.title_new);
   }
   onTaskUpdated(e) {
     this.updateUI();
-    console.log(`Task was updated`);
+    console.log(`Task updated`);
   }
   /** Logic **/
   updateUI() {
