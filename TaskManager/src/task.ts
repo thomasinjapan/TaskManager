@@ -19,13 +19,24 @@ export class Task extends EventEmitter {
     constructor(initialTitle: string, initialDescription: string) {
         super();
         this._title = initialTitle;
-        this._description = initialDescription;
+        this._description = initialDescription
     }
 
+    /**
+     * gets title of the task
+     * @returns Task 
+     */
     get title(): string {
         return this._title;
     }
 
+    /**
+     * sets title of of the task
+     * @param {number} value new title
+     * @returns nothing
+     * @emits info that title was updated
+     * @emits 
+     */
     set title(value: string) {
         this._title = value;
         this.emit(this.EVENT_TITLE_UPDATED, {});
