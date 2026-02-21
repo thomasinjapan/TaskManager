@@ -17,7 +17,7 @@ export class Task extends EventEmitter {
     private _title: string;
     private _description: string;
 
-    /** list of all valid events **/
+   /** list of all valid events **/
     public EVENT_TITLE_UPDATED: string = 'title_updated';
     public EVENT_DESCRIPTION_UPDATED: string = 'description_updated';
     public EVENT_UPDATED: string = 'updated';
@@ -48,13 +48,13 @@ export class Task extends EventEmitter {
         //prepare payload for event
         var oldtitle: string = this._title;
         var newtitle: string = value;
-        var payload: Task.event_payload_titleupdated = { title_new: newtitle, title_old: oldtitle};
+        var payload: Task.event_payload_titleupdated = { title_new: newtitle, title_old: oldtitle };
 
         //do logic
         this._title = value;
 
         //emit events
-        this.emit(this.EVENT_TITLE_UPDATED, payload);
+        this.emit(.EVENT_TITLE_UPDATED, payload);
         this.emit(this.EVENT_UPDATED, {});
     }
 
