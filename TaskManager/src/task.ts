@@ -54,7 +54,7 @@ export class Task extends EventEmitter {
         this._title = value;
 
         //emit events
-        this.emit(.EVENT_TITLE_UPDATED, payload);
+        this.emit(this.EVENT_TITLE_UPDATED, payload);
         this.emit(this.EVENT_UPDATED, {});
     }
 
