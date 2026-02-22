@@ -3,6 +3,8 @@ import { Counter } from './counter.js';
 import { Task } from './task.js';
 import { CounterUI } from './counter-ui.js';
 import { TaskUI } from './task-ui.js';
+import { Tasklist } from './tasklist.js';
+import { TasklistUI } from './tasklist-ui.js';
 
 
 export class App {
@@ -10,7 +12,8 @@ export class App {
 
     private _design: string = `
             <div id="counter-ui"></div><br />
-            <div id="task-ui"></div><br />
+            <!-- <div id="task-ui"></div><br /> --!>
+            <div id="tasklist-ui"></div>
         `;
 
 
@@ -32,15 +35,19 @@ export class App {
     initializeObjects(): void {
         // identify HTML elements
         const counterContainer = this.getUIElementById('counter-ui') as HTMLElement;
-        const taskContainer = this.getUIElementById('task-ui') as HTMLElement;
+        //const taskContainer = this.getUIElementById('task-ui') as HTMLElement;
+        const taskListContainer = this.getUIElementById('tasklist-ui') as HTMLElement;
 
         // Initialize objects
         const counter = new Counter();
         const task = new Task('New Task', 'New Description');
+        const tasklist = new Tasklist('New Tasklist');
+        tasklist.addTask(task);
 
         //initialize UI
         const counterUI = new CounterUI(counterContainer, counter);
-        const taskUI = new TaskUI(taskContainer, task);
+        //const taskUI = new TaskUI(taskContainer, task);
+        const tasklistUI = new TasklistUI(taskListContainer, tasklist);
     }
 
 }
