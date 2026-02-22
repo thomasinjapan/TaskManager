@@ -30,5 +30,4 @@ export class BaseUI {
     public getUIElementById<T extends HTMLElement>(id: string): T | null {
         return this._container.querySelector(`#${id}`) as T | null;
     }
-
 }
