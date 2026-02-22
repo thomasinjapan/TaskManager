@@ -1,6 +1,6 @@
 ﻿/**  src/baseui.ts  **/
 
-export class BaseUI {
+export class BaseUI extends HTMLElement{
     _container: HTMLElement;
 
     /** dummy design info to be sure that it is available in UI initialization when called**/
@@ -9,6 +9,7 @@ export class BaseUI {
 
     /** Constructor and UI **/
     constructor(container: HTMLElement) {
+        super();
         this._container = container;
     }
 

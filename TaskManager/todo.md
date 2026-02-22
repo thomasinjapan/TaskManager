@@ -6,6 +6,16 @@
 ### Setup
 
 # simple UI elements/Frontend
+- [ ] update baseui so that it properly extends htmlelement
+	- [ ] update fundamental
+	- [ ] consider replacing BaseUI by HTMLElement entirely
+		- [ ] re-build counter in element that exentds htmlelement
+		- [ ] use render()
+		- [ ] consider if connectedCallback(), etc. is required
+		- [ ] 
+	- [ ] check if connectedCallback(), etc. is needed
+	- [ ] 
+
 - [ ] make tasklist visible and add one task and show
 	- [ ] prepare tasklist elemente
 		- [ ] logic
