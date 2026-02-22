@@ -44,6 +44,7 @@ export class Task extends EventEmitter {
      * @emits info that event was updated
      
      */
+
     set title(value: string) {
         //prepare payload for event
         var oldtitle: string = this._title;

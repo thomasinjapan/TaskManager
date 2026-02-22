@@ -1,13 +1,15 @@
 import { Counter } from "./counter.js";
 import { Task } from "./task.js";
 import { CounterUI } from "./counter-ui.js";
-import { TaskUI } from "./task-ui.js";
+import { Tasklist } from "./tasklist.js";
+import { TasklistUI } from "./tasklist-ui.js";
 class App {
   /** Constructor and UI **/
   constructor(container) {
     this._design = `
             <div id="counter-ui"></div><br />
-            <div id="task-ui"></div><br />
+            <!-- <div id="task-ui"></div><br /> --!>
+            <div id="tasklist-ui"></div>
         `;
     this._container = container;
     this._container.innerHTML = this._design;
@@ -18,11 +20,15 @@ class App {
   }
   initializeObjects() {
     const counterContainer = this.getUIElementById("counter-ui");
-    const taskContainer = this.getUIElementById("task-ui");
+    const taskListContainer = this.getUIElementById("tasklist-ui");
     const counter = new Counter();
-    const task = new Task("New Task", "New Description");
+    const task1 = new Task("New Task 1", "New Description 1");
+    const task2 = new Task("New Task 2", "New Description 2");
+    const tasklist = new Tasklist("New Tasklist");
+    tasklist.addTask(task1);
+    tasklist.addTask(task2);
     const counterUI = new CounterUI(counterContainer, counter);
-    const taskUI = new TaskUI(taskContainer, task);
+    const tasklistUI = new TasklistUI(taskListContainer, tasklist);
   }
 }
 export {

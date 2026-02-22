@@ -7,14 +7,22 @@ class Tasklist extends EventEmitter {
     this.EVENT_TITLE_UPDATED = "title_updated";
     this.EVENT_TASK_ADDED = "task_added";
     this.EVENT_TASK_REMOVED = "task_removed";
+    this.EVENT_TASKLIST_CLEARED = "tasklist_cleared";
     this._title = initialTitle;
+    this._tasks = [];
   }
   get title() {
     return this._title;
   }
   set title(value) {
+    var oldTitle = this._title;
+    var newTitle = value;
+    var payload = { title_old: oldTitle, title_new: newTitle };
     this._title = value;
-    this.emit(this.EVENT_TITLE_UPDATED, {});
+    this.emit(this.EVENT_TITLE_UPDATED, payload);
+  }
+  get tasks() {
+    return this._tasks;
   }
   addTask(task) {
     this._tasks.push(task);
@@ -26,6 +34,10 @@ class Tasklist extends EventEmitter {
       this._tasks.splice(index, 1);
       this.emit(this.EVENT_TASK_REMOVED, { deletedTask: task });
     }
+  }
+  clearTasks() {
+    this._tasks = [];
+    this.emit(this.EVENT_TASKLIST_CLEARED, {});
   }
 }
 export {

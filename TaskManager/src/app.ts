@@ -40,9 +40,11 @@ export class App {
 
         // Initialize objects
         const counter = new Counter();
-        const task = new Task('New Task', 'New Description');
+        const task1 = new Task('New Task 1', 'New Description 1');
+        const task2 = new Task('New Task 2', 'New Description 2');
         const tasklist = new Tasklist('New Tasklist');
-        tasklist.addTask(task);
+        tasklist.addTask(task1);
+        tasklist.addTask(task2);
 
         //initialize UI
         const counterUI = new CounterUI(counterContainer, counter);
