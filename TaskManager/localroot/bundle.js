@@ -83,95 +83,6 @@
     }
   };
 
-  // src/baseclasses/baseui.ts
-  var BaseUI = class {
-    /** Constructor and UI **/
-    constructor(container) {
-      /** dummy design info to be sure that it is available in UI initialization when called**/
-      this._cssClass = "";
-      this._design = "";
-      this._container = container;
-    }
-    /** Logic **/
-    /** initializes the UI with current design and css class info*/
-    initializeUI() {
-      this._container.innerHTML = this._design;
-      this._cssClass ? this._container.classList.add(this._cssClass) : null;
-    }
-    /**
-     * gets html element by id from the container
-     * @param id id of the element to get
-     * @returns element with the specified id or null if not found
-     */
-    getUIElementById(id) {
-      return this._container.querySelector(`#${id}`);
-    }
-  };
-
-  // src/counter-ui.ts
-  var CounterUI = class extends BaseUI {
-    /** Constructor and UI **/
-    constructor(container, counter) {
-      super(container);
-      this._lblCount = null;
-      this._btnIncrement = null;
-      this._btnDecrement = null;
-      this._btnReset = null;
-      this._cssClass = `counter-container`;
-      this._design = `
-                <h1>TypeScript Counter</h1>
-                <div id="lblCount">0</div>
-                <div>
-                    <button id="cmdDecrement">Decrement</button>
-                    <button id="cmdReset">Reset</button>
-                    <button id="cmdIncrement">Increment</button>
-                </div>
-         `;
-      this.initializeUI();
-      this._counter = counter;
-      this._lblCount = this.getUIElementById("lblCount");
-      this._btnIncrement = this.getUIElementById("cmdIncrement");
-      this._btnDecrement = this.getUIElementById("cmdDecrement");
-      this._btnReset = this.getUIElementById("cmdReset");
-      this.updateUI();
-      this.setupEventListeners();
-      this.setupCounterEventHandlers();
-    }
-    /** Event handlers **/
-    setupEventListeners() {
-      this._btnIncrement?.addEventListener("click", this.onUIIncrement.bind(this));
-      this._btnDecrement?.addEventListener("click", this.onUIDecrement.bind(this));
-      this._btnReset?.addEventListener("click", this.onUIReset.bind(this));
-    }
-    setupCounterEventHandlers() {
-      this._counter.addEventListener(this._counter.EVENT_CHANGED, this.onCounterChange.bind(this));
-    }
-    onUIIncrement() {
-      const newCount = this._counter.increment();
-      this.updateUI();
-    }
-    onUIDecrement() {
-      const newCount = this._counter.decrement();
-      this.updateUI();
-    }
-    onUIReset() {
-      const newCount = this._counter.reset();
-      this.updateUI();
-    }
-    onCounterChange(e) {
-      const args = e.detail;
-      console.log("Counter changed");
-      console.log("Counter changed from : ", args.oldCount);
-      console.log("Counter changed to: ", args.newCount);
-      console.log("Counter change delta: ", args.delta);
-    }
-    /** Logic **/
-    updateUI() {
-      if (!this._lblCount) return;
-      this._lblCount.textContent = this._counter.count.toString();
-    }
-  };
-
   // src/tasklist.ts
   var Tasklist = class extends EventEmitter {
     constructor(initialTitle) {
@@ -212,6 +123,32 @@
     clearTasks() {
       this._tasks = [];
       this.emit(this.EVENT_TASKLIST_CLEARED, {});
+    }
+  };
+
+  // src/baseclasses/baseui.ts
+  var BaseUI = class extends HTMLElement {
+    /** Constructor and UI **/
+    constructor(container) {
+      super();
+      /** dummy design info to be sure that it is available in UI initialization when called**/
+      this._cssClass = "";
+      this._design = "";
+      this._container = container;
+    }
+    /** Logic **/
+    /** initializes the UI with current design and css class info*/
+    initializeUI() {
+      this._container.innerHTML = this._design;
+      this._cssClass ? this._container.classList.add(this._cssClass) : null;
+    }
+    /**
+     * gets html element by id from the container
+     * @param id id of the element to get
+     * @returns element with the specified id or null if not found
+     */
+    getUIElementById(id) {
+      return this._container.querySelector(`#${id}`);
     }
   };
 
@@ -351,7 +288,7 @@
     /** Constructor and UI **/
     constructor(container) {
       this._design = `
-            <div id="counter-ui"></div><br />
+            <div id="counter2-ui"></div><br />
             <!-- <div id="task-ui"></div><br /> --!>
             <div id="tasklist-ui"></div>
         `;
@@ -363,15 +300,14 @@
       return this._container.querySelector(`#${id}`);
     }
     initializeObjects() {
-      const counterContainer = this.getUIElementById("counter-ui");
+      const counterContainer = this.getUIElementById("counter-ui2");
       const taskListContainer = this.getUIElementById("tasklist-ui");
-      const counter = new Counter();
+      counterContainer.counter = new Counter();
       const task1 = new Task("New Task 1", "New Description 1");
       const task2 = new Task("New Task 2", "New Description 2");
       const tasklist = new Tasklist("New Tasklist");
       tasklist.addTask(task1);
       tasklist.addTask(task2);
-      const counterUI = new CounterUI(counterContainer, counter);
       const tasklistUI = new TasklistUI(taskListContainer, tasklist);
     }
   };
