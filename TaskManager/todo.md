@@ -6,15 +6,16 @@
 ### Setup
 
 # simple UI elements/Frontend
-- [ ] update baseui so that it properly extends htmlelement
-	- [ ] update fundamental
-	- [ ] consider replacing BaseUI by HTMLElement entirely
-		- [ ] re-build counter in element that exentds htmlelement
-		- [ ] use render()
+- [ ] replace baseui by just extending htmlelement
+	- [x] update fundamental
+	- [x] consider replacing BaseUI by HTMLElement entirely
+		- [x] re-build counter in element that exentds htmlelement
 		- [ ] consider if connectedCallback(), etc. is required
-		- [ ] 
-	- [ ] check if connectedCallback(), etc. is needed
-	- [ ] 
+		- [ ] use render()
+	- [ ] get rid of app.ts and replace it by app2.ts
+	- [ ] get rid of counter-ui.ts and replace it by counter2-ui.ts
+	- [ ] check if a baseui that extends from htmlelement makes sense to avoid redundancy
+	- [ ] check if it is possible to repalce the bottstrap element instead of adding the app as child inside
 
 - [ ] make tasklist visible and add one task and show
 	- [ ] prepare tasklist elemente
