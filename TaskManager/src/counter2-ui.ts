@@ -3,16 +3,16 @@ import { BaseUI } from './baseclasses/baseui.js';
 import { Counter } from './counter.js';
 
 // UI class for Counter component
-export class CounterUI2 extends HTMLElement { 
-    private _counter: Counter;
+export class CounterUI2 extends HTMLElement {
+    private _counter: Counter = new Counter();
 
     private _lblCount: HTMLElement | null = null;
     private _btnIncrement: HTMLElement | null = null;
     private _btnDecrement: HTMLElement | null = null;
     private _btnReset: HTMLElement | null = null;
 
-     _cssClass: string = `counter-container`;
-     _design: string = `
+    _cssClass: string = `counter-container`;
+    _design: string = `
                 <h1>TypeScript Counter</h1>
                 <div id="lblCount">0</div>
                 <div>
@@ -23,15 +23,20 @@ export class CounterUI2 extends HTMLElement {
          `;
 
     /** Constructor and UI **/
-    constructor(container: HTMLElement, counter: Counter) {
+    constructor(counter?: Counter) {
         /** start initialize UI - dont change**/
         super();
+
+        //** use counter from external else set up own counter*/
+        counter ? this._counter = counter : this._counter = new Counter();
+    }
+
+    /** Called when element is inserted into the DOM **/
+    connectedCallback(): void {
         // Render the counter 
         this.innerHTML = this._design
-        this._cssClass ? this.classList.add(this._cssClass) : null;        /** end initialize UI **/
-
-        // get all objects
-        this._counter = counter;
+        this._cssClass ? this.classList.add(this._cssClass) : null;
+        /** end initialize UI **/
 
         // Get the count display element
         this._lblCount = this.getUIElementById('lblCount');
@@ -39,7 +44,7 @@ export class CounterUI2 extends HTMLElement {
         this._btnIncrement = this.getUIElementById('cmdIncrement');
         this._btnDecrement = this.getUIElementById('cmdDecrement');
         this._btnReset = this.getUIElementById('cmdReset');
-        
+
         // Initialize the display with current count
         this.updateUI();
 
@@ -47,6 +52,7 @@ export class CounterUI2 extends HTMLElement {
         this.setupEventListeners();
         this.setupCounterEventHandlers();
     }
+
 
     /**
     * gets html element by id from the container

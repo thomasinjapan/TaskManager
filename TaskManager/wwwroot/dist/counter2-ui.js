@@ -1,7 +1,9 @@
+import { Counter } from "./counter.js";
 class CounterUI2 extends HTMLElement {
   /** Constructor and UI **/
-  constructor(container, counter) {
+  constructor(counter) {
     super();
+    this._counter = new Counter();
     this._lblCount = null;
     this._btnIncrement = null;
     this._btnDecrement = null;
@@ -16,9 +18,12 @@ class CounterUI2 extends HTMLElement {
                     <button id="cmdIncrement">Increment</button>
                 </div>
          `;
+    counter ? this._counter = counter : this._counter = new Counter();
+  }
+  /** Called when element is inserted into the DOM **/
+  connectedCallback() {
     this.innerHTML = this._design;
     this._cssClass ? this.classList.add(this._cssClass) : null;
-    this._counter = counter;
     this._lblCount = this.getUIElementById("lblCount");
     this._btnIncrement = this.getUIElementById("cmdIncrement");
     this._btnDecrement = this.getUIElementById("cmdDecrement");
