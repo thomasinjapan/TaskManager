@@ -20,6 +20,15 @@ The `.csproj` has a `PreBuild` hook that runs `npm run build` automatically, so 
 
 No test commands are configured yet.
 
+# Watch mode (localroot — single bundled file for local testing without ASP.NET)
+cd TaskManager && npm run watch-localroot
+
+# Run the ASP.NET Core backend (triggers npm run build via PreBuild hook)
+dotnet run --project TaskManager/TaskManager.csproj
+```
+
+There are no test commands configured yet.
+
 ## Architecture
 
 **Backend** (`Program.cs`): Minimal ASP.NET Core 8 setup — only serves static files from `wwwroot/`. No custom API routes yet.
