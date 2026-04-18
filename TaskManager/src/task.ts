@@ -1,4 +1,4 @@
-﻿/** src/task.ts */
+/** src/task.ts */
 
 import { EventEmitter } from './baseclasses/EventHandling.js';
 
@@ -21,22 +21,30 @@ export namespace Task {
  * Both `title` and `description` emit events when changed.
  */
 export class Task extends EventEmitter {
+
+    // #region Fields
     private _title: string;
     private _description: string;
+    // #endregion
 
+    // #region Events
     /** Fired when the title changes. Payload: {@link Task.event_payload_titleupdated}. */
     public EVENT_TITLE_UPDATED: string = 'title_updated';
     /** Fired when the description changes. Payload: {@link Task.event_payload_descriptionupdated}. */
     public EVENT_DESCRIPTION_UPDATED: string = 'description_updated';
     /** Fired on any property change, after the specific event. Payload: `{}`. */
     public EVENT_UPDATED: string = 'updated';
+    // #endregion
 
+    // #region Constructor
     constructor(initialTitle: string, initialDescription: string) {
         super();
         this._title = initialTitle;
         this._description = initialDescription
     }
+    // #endregion
 
+    // #region Properties
     /** The task title. */
     get title(): string {
         return this._title;
@@ -82,4 +90,5 @@ export class Task extends EventEmitter {
         this.emit(this.EVENT_DESCRIPTION_UPDATED, payload);
         this.emit(this.EVENT_UPDATED, {});
     }
+    // #endregion
 }

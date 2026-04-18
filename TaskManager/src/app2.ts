@@ -1,4 +1,4 @@
-﻿/** src/app2.ts */
+/** src/app2.ts */
 
 import { Counter } from './counter.js';
 import { Task } from './task.js';
@@ -20,6 +20,8 @@ import { MinimalUI2 } from './minimal-ui2.js';
  * Renders the application shell and wires child components to their models.
  */
 export class App2 extends HTMLElement {
+
+    // #region Fields
     private _design: string = `
             <minimal-ui id="minimal-ui"></minimal-ui><br />
             <minimal-ui2 id="minimal-ui2"></minimal-ui2><br />
@@ -31,11 +33,15 @@ export class App2 extends HTMLElement {
     //        <!-- <div id="task-ui"></div><br /> --!>
     //        <div id="tasklist-ui"></div>
     //    `;
+    // #endregion
 
+    // #region Constructor
     constructor() {
         super();
     }
+    // #endregion
 
+    // #region Lifecycle
     /** Called when the element is inserted into the DOM. */
     connectedCallback(): void {
         this.innerHTML = this._design;
@@ -48,12 +54,16 @@ export class App2 extends HTMLElement {
         //// Initialize the display
         //this.initializeObjects();
     }
+    // #endregion
 
+    // #region DOM
     /** Queries a child element by id within this component's subtree. */
     private getUIElementById(id: string): HTMLElement | null {
         return this.querySelector(`#${id}`);
     }
+    // #endregion
 
+    // #region Methods
     /** Locates child components and wires them to their domain models. */
     initializeObjects(): void {
         const minimalContainer: MinimalUI | null = this.getUIElementById('minimal-ui') as MinimalUI;
@@ -82,5 +92,6 @@ export class App2 extends HTMLElement {
         //const taskUI = new TaskUI(taskContainer, task);
         //const tasklistUI = new TasklistUI(taskListContainer, tasklist);
     }
+    // #endregion
 
 }

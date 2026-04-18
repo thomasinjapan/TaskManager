@@ -1,4 +1,4 @@
-﻿/** src/minimal-ui2.ts */
+/** src/minimal-ui2.ts */
 
 import { BaseUI } from './baseclasses/baseui.js';
 import { Counter } from './counter.js';
@@ -8,15 +8,21 @@ import { Counter } from './counter.js';
  * Serves as a second template for learning the custom element lifecycle.
  */
 export class MinimalUI2 extends HTMLElement {
+
+    // #region Fields
     _cssClass: string | null = null;
     _design: string = `
                 <h1>Minimal Header 2</h1>
          `;
+    // #endregion
 
+    // #region Constructor
     constructor() {
         super();
     }
+    // #endregion
 
+    // #region Lifecycle
     /** Called when the element is inserted into the DOM. */
     connectedCallback(): void {
         console.log('Initializing MinimalUI');
@@ -32,7 +38,9 @@ export class MinimalUI2 extends HTMLElement {
 
         console.log('MinimalUI initialized successfully');
     }
+    // #endregion
 
+    // #region DOM
     /**
      * Queries an element by id within this component's subtree.
      * @param id - The element id to search for.
@@ -41,7 +49,9 @@ export class MinimalUI2 extends HTMLElement {
     public getUIElementById<T extends HTMLElement>(id: string): T | null {
         return this.querySelector(`#${id}`) as T | null;
     }
+    // #endregion
 
+    // #region Event Handlers
     private setupEventListeners(): void {
         /** nothing here yet */
     }
@@ -49,12 +59,14 @@ export class MinimalUI2 extends HTMLElement {
     private setupObjectsEventHandlers(): void {
         /** nothing here yet */
     }
+    // #endregion
 
+    // #region UI
     updateUI(): void {
         /** nothing here yet */
 
         //if (!this._lblCount) return;
         //this._lblCount.textContent = this._counter.count.toString();
     }
+    // #endregion
 }
-

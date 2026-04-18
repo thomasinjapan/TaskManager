@@ -1,4 +1,4 @@
-﻿/** src/counter2-ui.ts */
+/** src/counter2-ui.ts */
 
 import { BaseUI } from './baseclasses/baseui.js';
 import { Counter } from './counter.js';
@@ -9,6 +9,8 @@ import { Counter } from './counter.js';
  * creates its own instance if none is provided.
  */
 export class CounterUI2 extends HTMLElement {
+
+    // #region Fields
     private _counter: Counter = new Counter();
 
     private _lblCount: HTMLElement | null = null;
@@ -26,13 +28,28 @@ export class CounterUI2 extends HTMLElement {
                     <button id="cmdIncrement">Increment</button>
                 </div>
          `;
+    // #endregion
 
+    // #region Constructor
     /** @param counter - Optional external Counter model to bind to. */
     constructor(counter?: Counter) {
         super();
         counter ? this._counter = counter : this._counter = new Counter();
     }
+    // #endregion
 
+    // #region Properties
+    /** The bound Counter model. */
+    set counter(counter: Counter) {
+        this._counter = counter;
+    }
+
+    get counter(): Counter {
+        return this._counter;
+    }
+    // #endregion
+
+    // #region Lifecycle
     /** Called when the element is inserted into the DOM. */
     connectedCallback(): void {
         this.innerHTML = this._design
@@ -47,7 +64,9 @@ export class CounterUI2 extends HTMLElement {
         this.setupEventListeners();
         this.setupCounterEventHandlers();
     }
+    // #endregion
 
+    // #region DOM
     /**
      * Queries an element by id within this component's subtree.
      * @param id - The element id to search for.
@@ -56,16 +75,9 @@ export class CounterUI2 extends HTMLElement {
     public getUIElementById<T extends HTMLElement>(id: string): T | null {
         return this.querySelector(`#${id}`) as T | null;
     }
+    // #endregion
 
-    /** The bound Counter model. */
-    set counter(counter: Counter) {
-        this._counter = counter;
-    }
-
-    get counter(): Counter {
-        return this._counter;
-    }
-
+    // #region Event Handlers
     private setupEventListeners(): void {
         this._btnIncrement?.addEventListener('click', this.onUIIncrement.bind(this));
         this._btnDecrement?.addEventListener('click', this.onUIDecrement.bind(this));
@@ -98,11 +110,13 @@ export class CounterUI2 extends HTMLElement {
         console.log('Counter changed to: ', args.newCount);
         console.log('Counter change delta: ', args.delta);
     }
+    // #endregion
 
+    // #region UI
     /** Syncs the count label to the current model value. */
     updateUI(): void {
         if (!this._lblCount) return;
         this._lblCount.textContent = this._counter.count.toString();
     }
+    // #endregion
 }
-

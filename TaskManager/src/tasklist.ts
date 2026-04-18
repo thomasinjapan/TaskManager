@@ -1,4 +1,4 @@
-﻿/** src/tasklist.ts */
+/** src/tasklist.ts */
 
 import { EventEmitter } from './baseclasses/EventHandling.js';
 import { Task } from './task.js';
@@ -28,9 +28,13 @@ export namespace Tasklist {
  * Emits events whenever the collection or its title changes.
  */
 export class Tasklist extends EventEmitter {
+
+    // #region Fields
     private _title: string;
     private _tasks: Task[] = [];
+    // #endregion
 
+    // #region Events
     /** Fired when the title changes. Payload: {@link Tasklist.event_payload_payloadTitleupdated}. */
     public EVENT_TITLE_UPDATED: string = 'title_updated';
     /** Fired when a task is added. Payload: {@link Tasklist.event_payload_TaskAdded}. */
@@ -39,13 +43,17 @@ export class Tasklist extends EventEmitter {
     public EVENT_TASK_REMOVED: string = 'task_removed';
     /** Fired when all tasks are cleared. Payload: `{}`. */
     public EVENT_TASKLIST_CLEARED: string = 'tasklist_cleared';
+    // #endregion
 
+    // #region Constructor
     constructor(initialTitle: string) {
         super();
         this._title = initialTitle;
         this._tasks = [];
     }
+    // #endregion
 
+    // #region Properties
     /** The list title. Setting this emits `title_updated`. */
     get title(): string {
         return this._title;
@@ -65,7 +73,9 @@ export class Tasklist extends EventEmitter {
     public get tasks(): Task[] {
         return this._tasks;
     }
+    // #endregion
 
+    // #region Methods
     /** Appends a task and emits `task_added`. */
     public addTask(task: Task): void {
         this._tasks.push(task);
@@ -86,4 +96,5 @@ export class Tasklist extends EventEmitter {
         this._tasks = [];
         this.emit(this.EVENT_TASKLIST_CLEARED, {});
     }
+    // #endregion
 }

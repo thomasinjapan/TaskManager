@@ -1,4 +1,4 @@
-﻿/** src/counter.ts */
+/** src/counter.ts */
 
 import { EventEmitter } from './baseclasses/EventHandling.js';
 
@@ -14,22 +14,32 @@ export namespace Counter {
 
 /** Integer counter model. Emits `changed` on every state mutation. */
 export class Counter extends EventEmitter {
-    private _count: number;
 
+    // #region Fields
+    private _count: number;
+    // #endregion
+
+    // #region Events
     /** Fired by increment(), decrement(), and reset(). Payload: {@link Counter.payloadChanged}. */
     public EVENT_CHANGED: string = 'changed';
+    // #endregion
 
+    // #region Constructor
     /** @param initialValue - Starting value; defaults to 0. */
     constructor(initialValue: number = 0) {
         super();
         this._count = initialValue;
     }
+    // #endregion
 
+    // #region Properties
     /** Current counter value (read-only). */
     get count(): number {
         return this._count;
     }
+    // #endregion
 
+    // #region Methods
     /** Adds 1 and emits `changed`. @returns New count. */
     increment(): number {
         this._count += 1;
@@ -51,4 +61,5 @@ export class Counter extends EventEmitter {
         this.emit(this.EVENT_CHANGED, <Counter.payloadChanged>{ newCount: this.count, oldCount: oldCount, delta: this.count-oldCount });
         return this._count;
     }
+    // #endregion
 }
