@@ -1,3 +1,5 @@
+[← Back to Repository](../README.md)
+
 # TaskManager Documentation
 
 A training project for building vanilla web applications. Hybrid stack: ASP.NET Core 8 backend serving a Vanilla TypeScript + Web Components frontend.
