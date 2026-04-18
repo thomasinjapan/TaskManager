@@ -5,7 +5,10 @@
       "Bash(grep -v \"^d.*\\\\.$\")",
       "Bash(gh pr *)",
       "Bash(where gh *)",
-      "Bash(winget list *)"
+      "Bash(winget list *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)"
     ]
   }
 }
