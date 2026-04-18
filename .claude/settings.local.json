@@ -26,7 +26,9 @@
       "Edit(TaskManager/Properties/launchSettings.json)",
       "Write(TaskManager/Properties/launchSettings.json)",
       "Edit(CLAUDE.md)",
-      "Write(CLAUDE.md)"
+      "Write(CLAUDE.md)",
+      "Edit(doc/**)",
+      "Write(doc/**)"
     ],
     "deny": [
       "Edit(**)",
