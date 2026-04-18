@@ -18,6 +18,12 @@ Listeners attach with the standard `addEventListener(eventName, handler)` API.
 
 Simple integer counter with increment, decrement, and reset operations.
 
+**Constructor:**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `initialValue` | `number` | `0` | Starting value |
+
 **Events:**
 
 | Event constant | Value | Payload type |
@@ -30,18 +36,20 @@ Simple integer counter with increment, decrement, and reset operations.
 |-------|------|-------------|
 | `oldCount` | `number` | Value before the change |
 | `newCount` | `number` | Value after the change |
-| `delta` | `number` | Signed difference (`newCount - oldCount`) |
+| `delta` | `number` | Signed difference: `+1` for increment, `-1` for decrement, variable for reset |
 
 **API:**
 
 | Method / Property | Description |
 |-------------------|-------------|
 | `count` | Current value (read-only) |
-| `increment()` | Adds 1, returns new count |
-| `decrement()` | Subtracts 1, returns new count |
-| `reset()` | Sets to 0, returns 0 |
+| `increment()` | Adds 1, emits `changed`, returns new count |
+| `decrement()` | Subtracts 1, emits `changed`, returns new count |
+| `reset()` | Sets to 0, emits `changed`, returns 0 |
 
 **Interaction flow (CounterUI2 + Counter):**
+
+`updateUI()` is called directly from each button handler after mutating the model. The `onCounterChange` listener fires separately from the `changed` event and logs the payload to the console — it does not call `updateUI()`.
 
 ```mermaid
 sequenceDiagram
@@ -53,18 +61,21 @@ sequenceDiagram
     CounterUI2->>Counter: increment()
     Counter->>Counter: _count += 1
     Counter-->>CounterUI2: emit "changed" {oldCount, newCount, delta}
+    CounterUI2->>CounterUI2: onCounterChange — console.log only
     CounterUI2->>CounterUI2: updateUI() — refresh lblCount
 
     User->>CounterUI2: click Decrement button
     CounterUI2->>Counter: decrement()
     Counter->>Counter: _count -= 1
     Counter-->>CounterUI2: emit "changed" {oldCount, newCount, delta}
+    CounterUI2->>CounterUI2: onCounterChange — console.log only
     CounterUI2->>CounterUI2: updateUI()
 
     User->>CounterUI2: click Reset button
     CounterUI2->>Counter: reset()
     Counter->>Counter: _count = 0
     Counter-->>CounterUI2: emit "changed" {oldCount, newCount, delta}
+    CounterUI2->>CounterUI2: onCounterChange — console.log only
     CounterUI2->>CounterUI2: updateUI()
 ```
 
@@ -73,6 +84,13 @@ sequenceDiagram
 ## Task (`src/task.ts`)
 
 A single task with a title and description. Both properties emit events on change.
+
+**Constructor:**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `initialTitle` | `string` | — | Initial task title (required) |
+| `initialDescription` | `string` | — | Initial task description (required) |
 
 **Events:**
 
@@ -126,6 +144,12 @@ sequenceDiagram
 ## Tasklist (`src/tasklist.ts`)
 
 An ordered collection of `Task` objects with a title.
+
+**Constructor:**
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `initialTitle` | `string` | — | Initial list title (required) |
 
 **Events:**
 
