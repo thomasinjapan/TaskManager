@@ -1,4 +1,5 @@
-﻿/**  src/app.ts  **/
+﻿/** src/app2.ts */
+
 import { Counter } from './counter.js';
 import { Task } from './task.js';
 import { CounterUI } from './counter-ui.js';
@@ -9,11 +10,15 @@ import { CounterUI2 } from './counter2-ui.js';
 import { MinimalUI } from './minimal-ui.js';
 import { MinimalUI2 } from './minimal-ui2.js';
 
-/** define all elements that are used if they are not defined yet */
+// Register child custom elements before the template is rendered.
 !customElements.get('minimal-ui') ? customElements.define('minimal-ui', MinimalUI) : null;
 !customElements.get('minimal-ui2') ? customElements.define('minimal-ui2', MinimalUI2) : null;
 !customElements.get('counter2-ui') ? customElements.define('counter2-ui', CounterUI2) : null;
 
+/**
+ * Root application component registered as `<app-root>`.
+ * Renders the application shell and wires child components to their models.
+ */
 export class App2 extends HTMLElement {
     private _design: string = `
             <minimal-ui id="minimal-ui"></minimal-ui><br />
@@ -27,18 +32,15 @@ export class App2 extends HTMLElement {
     //        <div id="tasklist-ui"></div>
     //    `;
 
-
-    /** Constructor and UI **/
     constructor() {
         super();
     }
 
-    /** Called when element is inserted into the DOM **/
+    /** Called when the element is inserted into the DOM. */
     connectedCallback(): void {
-        // Render the UI
         this.innerHTML = this._design;
 
-        // Wait for child elements to initialize
+        // Defer wiring until child connectedCallbacks have run.
         requestAnimationFrame(() => {
             this.initializeObjects();
         });
@@ -47,13 +49,13 @@ export class App2 extends HTMLElement {
         //this.initializeObjects();
     }
 
+    /** Queries a child element by id within this component's subtree. */
     private getUIElementById(id: string): HTMLElement | null {
         return this.querySelector(`#${id}`);
     }
 
+    /** Locates child components and wires them to their domain models. */
     initializeObjects(): void {
-        // identify HTML elements
-
         const minimalContainer: MinimalUI | null = this.getUIElementById('minimal-ui') as MinimalUI;
         const minimalContainer2: MinimalUI2 | null = this.getUIElementById('minimal-ui2') as MinimalUI2;
         const counter2Container: CounterUI2 | null = this.getUIElementById('counter2-ui') as CounterUI2;
@@ -61,8 +63,6 @@ export class App2 extends HTMLElement {
         minimalContainer ? console.log('Minimal container found:', minimalContainer) : console.error('Minimal container not found');
         minimalContainer2 ? console.log('Minimal2 container found:', minimalContainer2) : console.error('Minimal2 container not found');
         counter2Container ? console.log('Counter2 container found:', counter2Container) : console.error('Counter2 container not found');
-
-
 
         //const taskContainer = this.getUIElementById('task-ui') as HTMLElement;
         //const taskListContainer = this.getUIElementById('tasklist-ui') as HTMLElement;

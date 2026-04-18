@@ -1,8 +1,13 @@
-﻿/**  src/counter-ui.ts  **/
+﻿/** src/counter2-ui.ts */
+
 import { BaseUI } from './baseclasses/baseui.js';
 import { Counter } from './counter.js';
 
-// UI class for Counter component
+/**
+ * Custom element `<counter2-ui>` that renders a Counter model.
+ * Accepts an optional external Counter via the `counter` setter;
+ * creates its own instance if none is provided.
+ */
 export class CounterUI2 extends HTMLElement {
     private _counter: Counter = new Counter();
 
@@ -22,47 +27,37 @@ export class CounterUI2 extends HTMLElement {
                 </div>
          `;
 
-    /** Constructor and UI **/
+    /** @param counter - Optional external Counter model to bind to. */
     constructor(counter?: Counter) {
-        /** start initialize UI - dont change**/
         super();
-
-        //** use counter from external else set up own counter*/
         counter ? this._counter = counter : this._counter = new Counter();
     }
 
-    /** Called when element is inserted into the DOM **/
+    /** Called when the element is inserted into the DOM. */
     connectedCallback(): void {
-        // Render the counter 
         this.innerHTML = this._design
         this._cssClass ? this.classList.add(this._cssClass) : null;
-        /** end initialize UI **/
 
-        // Get the count display element
         this._lblCount = this.getUIElementById('lblCount');
-
         this._btnIncrement = this.getUIElementById('cmdIncrement');
         this._btnDecrement = this.getUIElementById('cmdDecrement');
         this._btnReset = this.getUIElementById('cmdReset');
 
-        // Initialize the display with current count
         this.updateUI();
-
-        // Setup event listeners
         this.setupEventListeners();
         this.setupCounterEventHandlers();
     }
 
-
     /**
-    * gets html element by id from the container
-    * @param id id of the element to get
-    * @returns element with the specified id or null if not found
-    */
+     * Queries an element by id within this component's subtree.
+     * @param id - The element id to search for.
+     * @returns The element cast to T, or null if not found.
+     */
     public getUIElementById<T extends HTMLElement>(id: string): T | null {
         return this.querySelector(`#${id}`) as T | null;
     }
 
+    /** The bound Counter model. */
     set counter(counter: Counter) {
         this._counter = counter;
     }
@@ -71,8 +66,6 @@ export class CounterUI2 extends HTMLElement {
         return this._counter;
     }
 
-
-    /** Event handlers **/
     private setupEventListeners(): void {
         this._btnIncrement?.addEventListener('click', this.onUIIncrement.bind(this));
         this._btnDecrement?.addEventListener('click', this.onUIDecrement.bind(this));
@@ -80,7 +73,6 @@ export class CounterUI2 extends HTMLElement {
     }
 
     private setupCounterEventHandlers(): void {
-        // Use a single event listener for all counter events
         this._counter.addEventListener(this._counter.EVENT_CHANGED, this.onCounterChange.bind(this));
     }
 
@@ -107,8 +99,7 @@ export class CounterUI2 extends HTMLElement {
         console.log('Counter change delta: ', args.delta);
     }
 
-    /** Logic **/
-
+    /** Syncs the count label to the current model value. */
     updateUI(): void {
         if (!this._lblCount) return;
         this._lblCount.textContent = this._counter.count.toString();
