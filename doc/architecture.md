@@ -38,6 +38,29 @@ Pure TypeScript compiled to ESM modules by esbuild. Two logical layers:
 4. `App2.connectedCallback()` renders child custom elements via `innerHTML`
 5. After the next animation frame, `initializeObjects()` wires up model–UI bindings
 
+```mermaid
+sequenceDiagram
+    participant Browser
+    participant ASP.NET Core
+    participant bootstrapper.ts
+    participant App2
+    participant ChildElements
+
+    Browser->>ASP.NET Core: GET /
+    ASP.NET Core-->>Browser: index.html
+    Browser->>ASP.NET Core: GET /dist/bootstrapper.js
+    ASP.NET Core-->>Browser: bootstrapper.js (ESM)
+    Browser->>bootstrapper.ts: DOMContentLoaded
+    bootstrapper.ts->>bootstrapper.ts: customElements.define("app-root", App2)
+    bootstrapper.ts->>App2: createElement("app-root")
+    bootstrapper.ts->>Browser: appendChild(app_root) → triggers connectedCallback
+    App2->>App2: connectedCallback()
+    App2->>Browser: innerHTML = template (renders child elements)
+    Browser->>ChildElements: connectedCallback() for each child
+    App2->>App2: requestAnimationFrame(initializeObjects)
+    App2->>App2: initializeObjects() — wire model–UI bindings
+```
+
 ## Key Design Decisions
 
 - **No shadow DOM** — components use the regular DOM for simplicity
