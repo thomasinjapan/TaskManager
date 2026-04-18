@@ -8,7 +8,13 @@
       "Bash(winget list *)",
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git restore *)",
+      "Bash(xargs wc *)",
+      "Bash(mermaid\" /c/Users/thoma/source/repos/TaskManager/doc/models.md | head -40)",
+      "Bash(grep -A 30 \"^```mermaid\" /c/Users/thoma/source/repos/TaskManager/doc/models.md | head -40)",
+      "Bash(awk -F: '{sum+=$2} END {print \"Total code blocks:\", sum}')",
+      "Bash(git commit *)"
     ]
   }
 }

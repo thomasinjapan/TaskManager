@@ -10,31 +10,44 @@ class App2 extends HTMLElement {
   //        <!-- <div id="task-ui"></div><br /> --!>
   //        <div id="tasklist-ui"></div>
   //    `;
-  /** Constructor and UI **/
+  // #endregion
+  // #region Constructor
   constructor() {
     super();
+    // #region Fields
     this._design = `
             <minimal-ui id="minimal-ui"></minimal-ui><br />
             <minimal-ui2 id="minimal-ui2"></minimal-ui2><br />
             <counter2-ui id="counter2-ui"></counter2-ui><br />
         `;
   }
-  /** Called when element is inserted into the DOM **/
+  // #endregion
+  // #region Lifecycle
+  /** Called when the element is inserted into the DOM. */
   connectedCallback() {
     this.innerHTML = this._design;
     requestAnimationFrame(() => {
       this.initializeObjects();
     });
   }
+  // #endregion
+  // #region DOM
+  /** Queries a child element by id within this component's subtree. */
   getUIElementById(id) {
     return this.querySelector(`#${id}`);
   }
+  // #endregion
+  // #region Methods
+  /** Locates child components and wires them to their domain models. */
   initializeObjects() {
     const minimalContainer = this.getUIElementById("minimal-ui");
     const minimalContainer2 = this.getUIElementById("minimal-ui2");
+    const counter2Container = this.getUIElementById("counter2-ui");
     minimalContainer ? console.log("Minimal container found:", minimalContainer) : console.error("Minimal container not found");
     minimalContainer2 ? console.log("Minimal2 container found:", minimalContainer2) : console.error("Minimal2 container not found");
+    counter2Container ? console.log("Counter2 container found:", counter2Container) : console.error("Counter2 container not found");
   }
+  // #endregion
 }
 export {
   App2

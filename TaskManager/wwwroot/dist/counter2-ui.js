@@ -1,8 +1,11 @@
 import { Counter } from "./counter.js";
 class CounterUI2 extends HTMLElement {
-  /** Constructor and UI **/
+  // #endregion
+  // #region Constructor
+  /** @param counter - Optional external Counter model to bind to. */
   constructor(counter) {
     super();
+    // #region Fields
     this._counter = new Counter();
     this._lblCount = null;
     this._btnIncrement = null;
@@ -20,7 +23,18 @@ class CounterUI2 extends HTMLElement {
          `;
     counter ? this._counter = counter : this._counter = new Counter();
   }
-  /** Called when element is inserted into the DOM **/
+  // #endregion
+  // #region Properties
+  /** The bound Counter model. */
+  set counter(counter) {
+    this._counter = counter;
+  }
+  get counter() {
+    return this._counter;
+  }
+  // #endregion
+  // #region Lifecycle
+  /** Called when the element is inserted into the DOM. */
   connectedCallback() {
     this.innerHTML = this._design;
     this._cssClass ? this.classList.add(this._cssClass) : null;
@@ -32,21 +46,18 @@ class CounterUI2 extends HTMLElement {
     this.setupEventListeners();
     this.setupCounterEventHandlers();
   }
+  // #endregion
+  // #region DOM
   /**
-  * gets html element by id from the container
-  * @param id id of the element to get
-  * @returns element with the specified id or null if not found
-  */
+   * Queries an element by id within this component's subtree.
+   * @param id - The element id to search for.
+   * @returns The element cast to T, or null if not found.
+   */
   getUIElementById(id) {
     return this.querySelector(`#${id}`);
   }
-  set counter(counter) {
-    this._counter = counter;
-  }
-  get counter() {
-    return this._counter;
-  }
-  /** Event handlers **/
+  // #endregion
+  // #region Event Handlers
   setupEventListeners() {
     this._btnIncrement?.addEventListener("click", this.onUIIncrement.bind(this));
     this._btnDecrement?.addEventListener("click", this.onUIDecrement.bind(this));
@@ -74,11 +85,14 @@ class CounterUI2 extends HTMLElement {
     console.log("Counter changed to: ", args.newCount);
     console.log("Counter change delta: ", args.delta);
   }
-  /** Logic **/
+  // #endregion
+  // #region UI
+  /** Syncs the count label to the current model value. */
   updateUI() {
     if (!this._lblCount) return;
     this._lblCount.textContent = this._counter.count.toString();
   }
+  // #endregion
 }
 export {
   CounterUI2

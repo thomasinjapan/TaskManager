@@ -1,13 +1,17 @@
 class MinimalUI2 extends HTMLElement {
-  /** Constructor and UI **/
+  // #endregion
+  // #region Constructor
   constructor() {
     super();
+    // #region Fields
     this._cssClass = null;
     this._design = `
                 <h1>Minimal Header 2</h1>
          `;
   }
-  /** Called when element is inserted into the DOM **/
+  // #endregion
+  // #region Lifecycle
+  /** Called when the element is inserted into the DOM. */
   connectedCallback() {
     console.log("Initializing MinimalUI");
     this.innerHTML = this._design;
@@ -18,22 +22,27 @@ class MinimalUI2 extends HTMLElement {
     this.setupObjectsEventHandlers();
     console.log("MinimalUI initialized successfully");
   }
+  // #endregion
+  // #region DOM
   /**
-  * gets html element by id from the container
-  * @param id id of the element to get
-  * @returns element with the specified id or null if not found
-  */
+   * Queries an element by id within this component's subtree.
+   * @param id - The element id to search for.
+   * @returns The element cast to T, or null if not found.
+   */
   getUIElementById(id) {
     return this.querySelector(`#${id}`);
   }
-  /** Event handlers **/
+  // #endregion
+  // #region Event Handlers
   setupEventListeners() {
   }
   setupObjectsEventHandlers() {
   }
-  /** Logic **/
+  // #endregion
+  // #region UI
   updateUI() {
   }
+  // #endregion
 }
 export {
   MinimalUI2

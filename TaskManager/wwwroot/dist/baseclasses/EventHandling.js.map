@@ -1,7 +1,7 @@
 {
   "version": 3,
   "sources": ["../../../src/baseclasses/EventHandling.ts"],
-  "sourcesContent": ["\uFEFF/** src/eventemitter.ts **/\r\nexport class EventEmitter extends EventTarget {\r\n    protected emit<T>(type: string, detail: T): void {\r\n        this.dispatchEvent(new CustomEvent<T>(type, {detail}));\r\n    }\r\n}"],
-  "mappings": "AACO,MAAM,qBAAqB,YAAY;AAAA,EAChC,KAAQ,MAAc,QAAiB;AAC7C,SAAK,cAAc,IAAI,YAAe,MAAM,EAAC,OAAM,CAAC,CAAC;AAAA,EACzD;AACJ;",
+  "sourcesContent": ["\uFEFF/** src/baseclasses/EventHandling.ts */\r\n\r\n/**\r\n * Base class for all domain models.\r\n * Wraps the native EventTarget with a typed emit helper so subclasses\r\n * can dispatch CustomEvent<T> without boilerplate.\r\n */\r\nexport class EventEmitter extends EventTarget {\r\n    /**\r\n     * Dispatches a typed CustomEvent on this object.\r\n     * @param type - Event name (e.g. 'changed', 'task_added')\r\n     * @param detail - Strongly-typed payload attached to the event\r\n     */\r\n    protected emit<T>(type: string, detail: T): void {\r\n        this.dispatchEvent(new CustomEvent<T>(type, {detail}));\r\n    }\r\n}"],
+  "mappings": "AAOO,MAAM,qBAAqB,YAAY;AAAA;AAAA;AAAA;AAAA;AAAA;AAAA,EAMhC,KAAQ,MAAc,QAAiB;AAC7C,SAAK,cAAc,IAAI,YAAe,MAAM,EAAC,OAAM,CAAC,CAAC;AAAA,EACzD;AACJ;",
   "names": []
 }

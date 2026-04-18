@@ -2,6 +2,11 @@
 (() => {
   // src/baseclasses/EventHandling.ts
   var EventEmitter = class extends EventTarget {
+    /**
+     * Dispatches a typed CustomEvent on this object.
+     * @param type - Event name (e.g. 'changed', 'task_added')
+     * @param detail - Strongly-typed payload attached to the event
+     */
     emit(type, detail) {
       this.dispatchEvent(new CustomEvent(type, { detail }));
     }
@@ -9,38 +14,55 @@
 
   // src/counter.ts
   var Counter = class extends EventEmitter {
+    // #endregion
+    // #region Constructor
+    /** @param initialValue - Starting value; defaults to 0. */
     constructor(initialValue = 0) {
       super();
-      /** list of all valid events **/
+      // #endregion
+      // #region Events
+      /** Fired by increment(), decrement(), and reset(). Payload: {@link Counter.payloadChanged}. */
       this.EVENT_CHANGED = "changed";
       this._count = initialValue;
     }
+    // #endregion
+    // #region Properties
+    /** Current counter value (read-only). */
     get count() {
       return this._count;
     }
+    // #endregion
+    // #region Methods
+    /** Adds 1 and emits `changed`. @returns New count. */
     increment() {
       this._count += 1;
       this.emit(this.EVENT_CHANGED, { newCount: this.count, oldCount: this.count - 1, delta: 1 });
       return this._count;
     }
+    /** Subtracts 1 and emits `changed`. @returns New count. */
     decrement() {
       this._count -= 1;
       this.emit(this.EVENT_CHANGED, { newCount: this.count, oldCount: this.count + 1, delta: -1 });
       return this._count;
     }
+    /** Resets to 0 and emits `changed`. @returns 0. */
     reset() {
       var oldCount = this._count;
       this._count = 0;
       this.emit(this.EVENT_CHANGED, { newCount: this.count, oldCount, delta: this.count - oldCount });
       return this._count;
     }
+    // #endregion
   };
 
   // src/counter2-ui.ts
   var CounterUI2 = class extends HTMLElement {
-    /** Constructor and UI **/
+    // #endregion
+    // #region Constructor
+    /** @param counter - Optional external Counter model to bind to. */
     constructor(counter) {
       super();
+      // #region Fields
       this._counter = new Counter();
       this._lblCount = null;
       this._btnIncrement = null;
@@ -58,7 +80,18 @@
          `;
       counter ? this._counter = counter : this._counter = new Counter();
     }
-    /** Called when element is inserted into the DOM **/
+    // #endregion
+    // #region Properties
+    /** The bound Counter model. */
+    set counter(counter) {
+      this._counter = counter;
+    }
+    get counter() {
+      return this._counter;
+    }
+    // #endregion
+    // #region Lifecycle
+    /** Called when the element is inserted into the DOM. */
     connectedCallback() {
       this.innerHTML = this._design;
       this._cssClass ? this.classList.add(this._cssClass) : null;
@@ -70,21 +103,18 @@
       this.setupEventListeners();
       this.setupCounterEventHandlers();
     }
+    // #endregion
+    // #region DOM
     /**
-    * gets html element by id from the container
-    * @param id id of the element to get
-    * @returns element with the specified id or null if not found
-    */
+     * Queries an element by id within this component's subtree.
+     * @param id - The element id to search for.
+     * @returns The element cast to T, or null if not found.
+     */
     getUIElementById(id) {
       return this.querySelector(`#${id}`);
     }
-    set counter(counter) {
-      this._counter = counter;
-    }
-    get counter() {
-      return this._counter;
-    }
-    /** Event handlers **/
+    // #endregion
+    // #region Event Handlers
     setupEventListeners() {
       this._btnIncrement?.addEventListener("click", this.onUIIncrement.bind(this));
       this._btnDecrement?.addEventListener("click", this.onUIDecrement.bind(this));
@@ -112,24 +142,31 @@
       console.log("Counter changed to: ", args.newCount);
       console.log("Counter change delta: ", args.delta);
     }
-    /** Logic **/
+    // #endregion
+    // #region UI
+    /** Syncs the count label to the current model value. */
     updateUI() {
       if (!this._lblCount) return;
       this._lblCount.textContent = this._counter.count.toString();
     }
+    // #endregion
   };
 
   // src/minimal-ui.ts
   var MinimalUI = class extends HTMLElement {
-    /** Constructor and UI **/
+    // #endregion
+    // #region Constructor
     constructor() {
       super();
+      // #region Fields
       this._cssClass = null;
       this._design = `
                 <h1>Minimal Header</h1>
          `;
     }
-    /** Called when element is inserted into the DOM **/
+    // #endregion
+    // #region Lifecycle
+    /** Called when the element is inserted into the DOM. */
     connectedCallback() {
       console.log("Initializing MinimalUI");
       this.innerHTML = this._design;
@@ -140,35 +177,44 @@
       this.setupObjectsEventHandlers();
       console.log("MinimalUI initialized successfully");
     }
+    // #endregion
+    // #region DOM
     /**
-    * gets html element by id from the container
-    * @param id id of the element to get
-    * @returns element with the specified id or null if not found
-    */
+     * Queries an element by id within this component's subtree.
+     * @param id - The element id to search for.
+     * @returns The element cast to T, or null if not found.
+     */
     getUIElementById(id) {
       return this.querySelector(`#${id}`);
     }
-    /** Event handlers **/
+    // #endregion
+    // #region Event Handlers
     setupEventListeners() {
     }
     setupObjectsEventHandlers() {
     }
-    /** Logic **/
+    // #endregion
+    // #region UI
     updateUI() {
     }
+    // #endregion
   };
 
   // src/minimal-ui2.ts
   var MinimalUI2 = class extends HTMLElement {
-    /** Constructor and UI **/
+    // #endregion
+    // #region Constructor
     constructor() {
       super();
+      // #region Fields
       this._cssClass = null;
       this._design = `
                 <h1>Minimal Header 2</h1>
          `;
     }
-    /** Called when element is inserted into the DOM **/
+    // #endregion
+    // #region Lifecycle
+    /** Called when the element is inserted into the DOM. */
     connectedCallback() {
       console.log("Initializing MinimalUI");
       this.innerHTML = this._design;
@@ -179,22 +225,27 @@
       this.setupObjectsEventHandlers();
       console.log("MinimalUI initialized successfully");
     }
+    // #endregion
+    // #region DOM
     /**
-    * gets html element by id from the container
-    * @param id id of the element to get
-    * @returns element with the specified id or null if not found
-    */
+     * Queries an element by id within this component's subtree.
+     * @param id - The element id to search for.
+     * @returns The element cast to T, or null if not found.
+     */
     getUIElementById(id) {
       return this.querySelector(`#${id}`);
     }
-    /** Event handlers **/
+    // #endregion
+    // #region Event Handlers
     setupEventListeners() {
     }
     setupObjectsEventHandlers() {
     }
-    /** Logic **/
+    // #endregion
+    // #region UI
     updateUI() {
     }
+    // #endregion
   };
 
   // src/app2.ts
@@ -207,31 +258,44 @@
     //        <!-- <div id="task-ui"></div><br /> --!>
     //        <div id="tasklist-ui"></div>
     //    `;
-    /** Constructor and UI **/
+    // #endregion
+    // #region Constructor
     constructor() {
       super();
+      // #region Fields
       this._design = `
             <minimal-ui id="minimal-ui"></minimal-ui><br />
             <minimal-ui2 id="minimal-ui2"></minimal-ui2><br />
             <counter2-ui id="counter2-ui"></counter2-ui><br />
         `;
     }
-    /** Called when element is inserted into the DOM **/
+    // #endregion
+    // #region Lifecycle
+    /** Called when the element is inserted into the DOM. */
     connectedCallback() {
       this.innerHTML = this._design;
       requestAnimationFrame(() => {
         this.initializeObjects();
       });
     }
+    // #endregion
+    // #region DOM
+    /** Queries a child element by id within this component's subtree. */
     getUIElementById(id) {
       return this.querySelector(`#${id}`);
     }
+    // #endregion
+    // #region Methods
+    /** Locates child components and wires them to their domain models. */
     initializeObjects() {
       const minimalContainer = this.getUIElementById("minimal-ui");
       const minimalContainer2 = this.getUIElementById("minimal-ui2");
+      const counter2Container = this.getUIElementById("counter2-ui");
       minimalContainer ? console.log("Minimal container found:", minimalContainer) : console.error("Minimal container not found");
       minimalContainer2 ? console.log("Minimal2 container found:", minimalContainer2) : console.error("Minimal2 container not found");
+      counter2Container ? console.log("Counter2 container found:", counter2Container) : console.error("Counter2 container not found");
     }
+    // #endregion
   };
 
   // src/bootstrapper.ts
