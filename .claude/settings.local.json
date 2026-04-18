@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(update-config)",
+      "Bash(grep -v \"^d.*\\\\.$\")",
+      "Bash(gh pr *)",
+      "Bash(where gh *)",
+      "Bash(winget list *)"
+    ]
+  }
+}

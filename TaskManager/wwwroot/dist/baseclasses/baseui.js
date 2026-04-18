@@ -1,6 +1,7 @@
-class BaseUI {
+class BaseUI extends HTMLElement {
   /** Constructor and UI **/
   constructor(container) {
+    super();
     /** dummy design info to be sure that it is available in UI initialization when called**/
     this._cssClass = "";
     this._design = "";

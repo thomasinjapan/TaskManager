@@ -4,21 +4,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-A vanilla TypeScript front-end application served by an ASP.NET Core (.NET 8) backend. The backend is a minimal static file server — all application logic lives in TypeScript. The project goal is to practice building vanilla web apps without frameworks.
+A training project for building vanilla web apps. Hybrid ASP.NET Core 8 (C#) backend + Vanilla TypeScript frontend using Web Components (no framework).
 
 ## Commands
 
-All frontend commands run from `TaskManager/` (where `package.json` lives).
+All commands run from `TaskManager/` (the project subdirectory).
 
-```bash
-# Install JS dependencies
-cd TaskManager && npm install
+| Goal | Command |
+|------|---------|
+| Full build | `npm run build` |
+| Watch mode (development) | `npm run watch-wwwroot` |
+| .NET build (also triggers npm build) | `dotnet build` from repo root |
 
-# Build TypeScript (both wwwroot and localroot targets)
-cd TaskManager && npm run build
+The `.csproj` has a `PreBuild` hook that runs `npm run build` automatically, so `dotnet build` covers both TypeScript and C#.
 
-# Watch mode (wwwroot — ESM modules, one file per source file)
-cd TaskManager && npm run watch-wwwroot
+No test commands are configured yet.
 
 # Watch mode (localroot — single bundled file for local testing without ASP.NET)
 cd TaskManager && npm run watch-localroot
@@ -31,40 +31,24 @@ There are no test commands configured yet.
 
 ## Architecture
 
-### Two build targets
+**Backend** (`Program.cs`): Minimal ASP.NET Core 8 setup — only serves static files from `wwwroot/`. No custom API routes yet.
 
-| Target | Script | Output | Purpose |
-|---|---|---|---|
-| `wwwroot` | `build-wwwroot` | `wwwroot/dist/*.js` | Served by ASP.NET Core; ESM format, one JS per TS source file |
-| `localroot` | `build-localroot` | `localroot/bundle.js` | Single bundle for opening `localroot/index.html` directly in browser without a server |
+**Frontend** (`src/`): Vanilla TypeScript compiled by esbuild to ESM modules in `wwwroot/dist/`. Entry point is `bootstrapper.ts`, which registers `App2` as `<app-root>` and mounts it.
 
-esbuild handles transpilation; `tsconfig.json` is used by the TypeScript compiler for type checking only (not for emit).
+### Component Model
 
-### Class architecture pattern
+All UI components are custom elements extending `HTMLElement` directly — no shadow DOM, no framework. The pattern is:
 
-Every domain concept has a paired logic class and UI class:
+1. **Models** (`counter.ts`, `task.ts`, `tasklist.ts`) extend `EventEmitter` and emit typed `CustomEvent<T>` on state changes.
+2. **UI components** (`*-ui.ts` or `*-ui2.ts`) extend `HTMLElement`, use `connectedCallback()` for initialization, manipulate `innerHTML` directly, and listen to model events to re-render.
 
-- **Logic class** (e.g. `Task`, `Tasklist`, `Counter`) extends `EventEmitter` (`baseclasses/EventHandling.ts`), which itself extends the native `EventTarget`. State changes fire typed `CustomEvent`s with strongly-typed payloads defined in a same-name namespace (e.g. `Task.event_payload_titleupdated`).
-- **UI class** (e.g. `TaskUI`, `TasklistUI`, `CounterUI`) extends `BaseUI` (`baseclasses/baseui.ts`). The constructor receives an `HTMLElement` container and a logic object, calls `initializeUI()` to inject `_design` HTML into the container, then wires both DOM event listeners (`setupDOMEventListeners`) and logic object event handlers (`setupObjectEventHandlers`).
+### Active vs Legacy Files
 
-### Entry point flow
+- `app2.ts` is the active app root — `app.ts` is legacy (to be removed)
+- `counter2-ui.ts` is the active counter component — `counter-ui.ts` is legacy (to be removed)
+- `baseclasses/baseui.ts` is being phased out — new components extend `HTMLElement` directly
 
-`bootstrapper.ts` → `App` (`app.ts`) → instantiates logic objects and UI objects, passing HTML containers located by id inside `#bootstrapper`.
+### Build Outputs
 
-### Event conventions
-
-- Event name constants are public instance fields on the logic class (e.g. `task.EVENT_TITLE_UPDATED`).
-- Event payloads are typed via namespace types on the same class.
-- UI handlers cast the incoming `Event` to `CustomEvent<any>` and then to the specific payload type.
-
-## Key Files
-
-| File | Role |
-|---|---|
-| `TaskManager/src/baseclasses/EventHandling.ts` | Base `EventEmitter` — extend for all logic classes |
-| `TaskManager/src/baseclasses/baseui.ts` | Base `BaseUI` — extend for all UI classes |
-| `TaskManager/src/app.ts` | Wires all objects together; edit here to add new features to the app |
-| `TaskManager/src/bootstrapper.ts` | DOM entry point; bootstraps `App` on `DOMContentLoaded` |
-| `TaskManager/TaskManager.csproj` | Runs `npm run build` automatically as a pre-build step |
-| `TaskManager/wwwroot/index.html` | HTML served by ASP.NET Core |
-| `TaskManager/localroot/index.html` | HTML for direct browser use (no server needed) |
+- `wwwroot/dist/` — ESM modules loaded individually by the browser (primary)
+- `localroot/bundle.js` — single bundled file (alternative entry point)

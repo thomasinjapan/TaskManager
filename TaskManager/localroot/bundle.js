@@ -36,83 +36,12 @@
     }
   };
 
-  // src/task.ts
-  var Task = class extends EventEmitter {
-    constructor(initialTitle, initialDescription) {
+  // src/counter2-ui.ts
+  var CounterUI2 = class extends HTMLElement {
+    /** Constructor and UI **/
+    constructor(counter) {
       super();
-      /** list of all valid events **/
-      this.EVENT_TITLE_UPDATED = "title_updated";
-      this.EVENT_DESCRIPTION_UPDATED = "description_updated";
-      this.EVENT_UPDATED = "updated";
-      this._title = initialTitle;
-      this._description = initialDescription;
-    }
-    /**
-     * gets title of the task
-     * @returns Task 
-     */
-    get title() {
-      return this._title;
-    }
-    /**
-     * sets title of of the task
-     * @param {number} value new title
-     * @returns nothing
-     * @emits title that was changed
-     * @emits info that event was updated
-     
-     */
-    set title(value) {
-      var oldtitle = this._title;
-      var newtitle = value;
-      var payload = { title_new: newtitle, title_old: oldtitle };
-      this._title = value;
-      this.emit(this.EVENT_TITLE_UPDATED, payload);
-      this.emit(this.EVENT_UPDATED, {});
-    }
-    get description() {
-      return this._description;
-    }
-    set description(value) {
-      var olddescription = this._description;
-      var newdescription = value;
-      var payload = { description_new: newdescription, description_old: olddescription };
-      this._description = value;
-      this.emit(this.EVENT_DESCRIPTION_UPDATED, payload);
-      this.emit(this.EVENT_UPDATED, {});
-    }
-  };
-
-  // src/baseclasses/baseui.ts
-  var BaseUI = class {
-    /** Constructor and UI **/
-    constructor(container) {
-      /** dummy design info to be sure that it is available in UI initialization when called**/
-      this._cssClass = "";
-      this._design = "";
-      this._container = container;
-    }
-    /** Logic **/
-    /** initializes the UI with current design and css class info*/
-    initializeUI() {
-      this._container.innerHTML = this._design;
-      this._cssClass ? this._container.classList.add(this._cssClass) : null;
-    }
-    /**
-     * gets html element by id from the container
-     * @param id id of the element to get
-     * @returns element with the specified id or null if not found
-     */
-    getUIElementById(id) {
-      return this._container.querySelector(`#${id}`);
-    }
-  };
-
-  // src/counter-ui.ts
-  var CounterUI = class extends BaseUI {
-    /** Constructor and UI **/
-    constructor(container, counter) {
-      super(container);
+      this._counter = new Counter();
       this._lblCount = null;
       this._btnIncrement = null;
       this._btnDecrement = null;
@@ -127,8 +56,12 @@
                     <button id="cmdIncrement">Increment</button>
                 </div>
          `;
-      this.initializeUI();
-      this._counter = counter;
+      counter ? this._counter = counter : this._counter = new Counter();
+    }
+    /** Called when element is inserted into the DOM **/
+    connectedCallback() {
+      this.innerHTML = this._design;
+      this._cssClass ? this.classList.add(this._cssClass) : null;
       this._lblCount = this.getUIElementById("lblCount");
       this._btnIncrement = this.getUIElementById("cmdIncrement");
       this._btnDecrement = this.getUIElementById("cmdDecrement");
@@ -136,6 +69,20 @@
       this.updateUI();
       this.setupEventListeners();
       this.setupCounterEventHandlers();
+    }
+    /**
+    * gets html element by id from the container
+    * @param id id of the element to get
+    * @returns element with the specified id or null if not found
+    */
+    getUIElementById(id) {
+      return this.querySelector(`#${id}`);
+    }
+    set counter(counter) {
+      this._counter = counter;
+    }
+    get counter() {
+      return this._counter;
     }
     /** Event handlers **/
     setupEventListeners() {
@@ -172,218 +119,131 @@
     }
   };
 
-  // src/tasklist.ts
-  var Tasklist = class extends EventEmitter {
-    constructor(initialTitle) {
+  // src/minimal-ui.ts
+  var MinimalUI = class extends HTMLElement {
+    /** Constructor and UI **/
+    constructor() {
       super();
-      this._tasks = [];
-      /** list of all valid events **/
-      this.EVENT_TITLE_UPDATED = "title_updated";
-      this.EVENT_TASK_ADDED = "task_added";
-      this.EVENT_TASK_REMOVED = "task_removed";
-      this.EVENT_TASKLIST_CLEARED = "tasklist_cleared";
-      this._title = initialTitle;
-      this._tasks = [];
-    }
-    get title() {
-      return this._title;
-    }
-    set title(value) {
-      var oldTitle = this._title;
-      var newTitle = value;
-      var payload = { title_old: oldTitle, title_new: newTitle };
-      this._title = value;
-      this.emit(this.EVENT_TITLE_UPDATED, payload);
-    }
-    get tasks() {
-      return this._tasks;
-    }
-    addTask(task) {
-      this._tasks.push(task);
-      this.emit(this.EVENT_TASK_ADDED, { newTask: task, newCount: this._tasks.length });
-    }
-    removeTask(task) {
-      const index = this._tasks.indexOf(task);
-      if (index !== -1) {
-        this._tasks.splice(index, 1);
-        this.emit(this.EVENT_TASK_REMOVED, { deletedTask: task });
-      }
-    }
-    clearTasks() {
-      this._tasks = [];
-      this.emit(this.EVENT_TASKLIST_CLEARED, {});
-    }
-  };
-
-  // src/task-ui.ts
-  var TaskUI = class extends BaseUI {
-    /** Constructor and UI **/
-    constructor(container, task) {
-      super(container);
-      this._lblTaskTitle = null;
-      this._lblTaskDescription = null;
-      this._txtTaskTitle = null;
-      this._txtTaskDescription = null;
-      /** design info **/
-      this._cssClass = "task-ui";
+      this._cssClass = null;
       this._design = `
-            <h1>Task</h1>
-            <div id="lblTaskTitle">NOT DEFINED</div>
-            <input type="text" id="txtTaskTitle" />
-            <div id="lblTaskDescription"></div>
-            <textarea id="txtTaskDescription"></textarea>
-        `;
-      this.initializeUI();
-      this._task = task;
-      this._lblTaskTitle = this.getUIElementById("lblTaskTitle");
-      this._lblTaskDescription = this.getUIElementById("lblTaskDescription");
-      this._txtTaskTitle = this.getUIElementById("txtTaskTitle");
-      this._txtTaskDescription = this.getUIElementById("txtTaskDescription");
+                <h1>Minimal Header</h1>
+         `;
+    }
+    /** Called when element is inserted into the DOM **/
+    connectedCallback() {
+      console.log("Initializing MinimalUI");
+      this.innerHTML = this._design;
+      console.log("innerHTML set in MinimalUI:", this._design);
+      this._cssClass ? this.classList.add(this._cssClass) : null;
       this.updateUI();
-      this.setupDOMEventListeners();
-      this.setupObjectEventHandlers();
+      this.setupEventListeners();
+      this.setupObjectsEventHandlers();
+      console.log("MinimalUI initialized successfully");
+    }
+    /**
+    * gets html element by id from the container
+    * @param id id of the element to get
+    * @returns element with the specified id or null if not found
+    */
+    getUIElementById(id) {
+      return this.querySelector(`#${id}`);
     }
     /** Event handlers **/
-    setupDOMEventListeners() {
-      this._txtTaskTitle?.addEventListener("change", this.onTaskTitleChangeUI.bind(this));
-      this._txtTaskDescription?.addEventListener("change", this.onTaskDescriptionChangeUI.bind(this));
+    setupEventListeners() {
     }
-    setupObjectEventHandlers() {
-      this._task.addEventListener(this._task.EVENT_UPDATED, this.onTaskUpdated.bind(this));
-      this._task.addEventListener(this._task.EVENT_TITLE_UPDATED, this.onTaskTitleUpdated.bind(this));
-      this._task.addEventListener(this._task.EVENT_DESCRIPTION_UPDATED, this.onTaskDescriptionUpdated.bind(this));
-    }
-    onTaskTitleChangeUI(e) {
-      this._task.title = e.target.value;
-    }
-    onTaskDescriptionChangeUI(e) {
-      this._task.description = e.target.value;
-    }
-    onTaskDescriptionUpdated(e) {
-      var args = e.detail;
-      console.log(`Task description was updated: from ` + args.description_old + ` to ` + args.description_new);
-    }
-    onTaskTitleUpdated(e) {
-      var args = e.detail;
-      console.log(`Task title was updated: from ` + args.title_old + ` to ` + args.title_new);
-    }
-    onTaskUpdated(e) {
-      this.updateUI();
-      console.log(`Task updated`);
+    setupObjectsEventHandlers() {
     }
     /** Logic **/
     updateUI() {
-      if (!this._lblTaskDescription || !this._lblTaskTitle) return;
-      this._lblTaskTitle.textContent = this._task.title.toString();
-      this._lblTaskDescription.textContent = this._task.description.toString();
     }
   };
 
-  // src/tasklist-ui.ts
-  var TasklistUI = class extends BaseUI {
+  // src/minimal-ui2.ts
+  var MinimalUI2 = class extends HTMLElement {
     /** Constructor and UI **/
-    constructor(container, tasklist) {
-      super(container);
-      this._lblTasklistTitle = null;
-      this._txtTasklistTitle = null;
-      this._lstTasklist = null;
-      /** design info **/
-      this._cssClass = "tasklist-ui";
+    constructor() {
+      super();
+      this._cssClass = null;
       this._design = `
-            <h1>Task</h1>
-            <div id="lblTasklistTitle">NOT DEFINED</div>
-            <input type="text" id="txtTasklistTitle" />
-            <ol id="lstTasklist"></ol>"
-        `;
-      this.initializeUI();
-      this._tasklist = tasklist;
-      this._lblTasklistTitle = this.getUIElementById("lblTasklistTitle");
-      this._txtTasklistTitle = this.getUIElementById("txtTasklistTitle");
-      this._lstTasklist = this.getUIElementById("lstTasklist");
+                <h1>Minimal Header 2</h1>
+         `;
+    }
+    /** Called when element is inserted into the DOM **/
+    connectedCallback() {
+      console.log("Initializing MinimalUI");
+      this.innerHTML = this._design;
+      console.log("innerHTML set in MinimalUI:", this._design);
+      this._cssClass ? this.classList.add(this._cssClass) : null;
       this.updateUI();
-      this.setupDOMEventListeners();
-      this.setupObjectEventHandlers();
+      this.setupEventListeners();
+      this.setupObjectsEventHandlers();
+      console.log("MinimalUI initialized successfully");
+    }
+    /**
+    * gets html element by id from the container
+    * @param id id of the element to get
+    * @returns element with the specified id or null if not found
+    */
+    getUIElementById(id) {
+      return this.querySelector(`#${id}`);
     }
     /** Event handlers **/
-    setupDOMEventListeners() {
-      this._txtTasklistTitle?.addEventListener("change", this.onTaskListTitleChangeUI.bind(this));
+    setupEventListeners() {
     }
-    setupObjectEventHandlers() {
-      this._tasklist.addEventListener(this._tasklist.EVENT_TITLE_UPDATED, this.onTaskTitleUpdated.bind(this));
-      this._tasklist.addEventListener(this._tasklist.EVENT_TASK_ADDED, this.onTaskAdded.bind(this));
-      this._tasklist.addEventListener(this._tasklist.EVENT_TASK_REMOVED, this.onTaskRemoved.bind(this));
-      this._tasklist.addEventListener(this._tasklist.EVENT_TASKLIST_CLEARED, this.onTasklistCleared.bind(this));
-    }
-    onTaskListTitleChangeUI(e) {
-      this._tasklist.title = e.target.value;
-    }
-    onTaskTitleUpdated(e) {
-      var args = e.detail;
-      console.log(`Tasklist title was updated: from ` + args.title_old + ` to ` + args.title_new);
-    }
-    onTaskAdded(e) {
-      var args = e.detail;
-      console.log(`Tasklist got a new task:  ` + args.newTask.title + ` and the list has now ` + args.newCount + ` items.`);
-    }
-    onTaskRemoved(e) {
-      var args = e.detail;
-      console.log(`Tasklist had a task removed:  ` + args.deletedTask.title);
-    }
-    onTasklistCleared(e) {
-      console.log(`Tasklist was cleared of all tasks.`);
+    setupObjectsEventHandlers() {
     }
     /** Logic **/
     updateUI() {
-      if (!this._lblTasklistTitle || !this._lstTasklist) return;
-      this._lblTasklistTitle.textContent = this._tasklist.title.toString();
-      this._tasklist.tasks.forEach(
-        (task) => {
-          var listItem = document.createElement("li");
-          var taskItem = new TaskUI(listItem, task);
-          this._lstTasklist?.appendChild(listItem);
-        }
-      );
     }
   };
 
-  // src/app.ts
-  var App = class {
+  // src/app2.ts
+  !customElements.get("minimal-ui") ? customElements.define("minimal-ui", MinimalUI) : null;
+  !customElements.get("minimal-ui2") ? customElements.define("minimal-ui2", MinimalUI2) : null;
+  !customElements.get("counter2-ui") ? customElements.define("counter2-ui", CounterUI2) : null;
+  var App2 = class extends HTMLElement {
+    //private _design: string = `
+    //        <div id="counter2-ui"></div><br />
+    //        <!-- <div id="task-ui"></div><br /> --!>
+    //        <div id="tasklist-ui"></div>
+    //    `;
     /** Constructor and UI **/
-    constructor(container) {
+    constructor() {
+      super();
       this._design = `
-            <div id="counter-ui"></div><br />
-            <!-- <div id="task-ui"></div><br /> --!>
-            <div id="tasklist-ui"></div>
+            <minimal-ui id="minimal-ui"></minimal-ui><br />
+            <minimal-ui2 id="minimal-ui2"></minimal-ui2><br />
+            <counter2-ui id="counter2-ui"></counter2-ui><br />
         `;
-      this._container = container;
-      this._container.innerHTML = this._design;
-      this.initializeObjects();
+    }
+    /** Called when element is inserted into the DOM **/
+    connectedCallback() {
+      this.innerHTML = this._design;
+      requestAnimationFrame(() => {
+        this.initializeObjects();
+      });
     }
     getUIElementById(id) {
-      return this._container.querySelector(`#${id}`);
+      return this.querySelector(`#${id}`);
     }
     initializeObjects() {
-      const counterContainer = this.getUIElementById("counter-ui");
-      const taskListContainer = this.getUIElementById("tasklist-ui");
-      const counter = new Counter();
-      const task1 = new Task("New Task 1", "New Description 1");
-      const task2 = new Task("New Task 2", "New Description 2");
-      const tasklist = new Tasklist("New Tasklist");
-      tasklist.addTask(task1);
-      tasklist.addTask(task2);
-      const counterUI = new CounterUI(counterContainer, counter);
-      const tasklistUI = new TasklistUI(taskListContainer, tasklist);
+      const minimalContainer = this.getUIElementById("minimal-ui");
+      const minimalContainer2 = this.getUIElementById("minimal-ui2");
+      minimalContainer ? console.log("Minimal container found:", minimalContainer) : console.error("Minimal container not found");
+      minimalContainer2 ? console.log("Minimal2 container found:", minimalContainer2) : console.error("Minimal2 container not found");
     }
   };
 
   // src/bootstrapper.ts
+  customElements.define("app-root", App2);
   function initializeApp() {
     const appContainer = document.getElementById("bootstrapper");
     if (!appContainer) {
       throw new Error("App container not found");
     }
     console.log("App container found:", appContainer);
-    const bootstrapper = new App(appContainer);
+    const app_root = document.createElement("app-root");
+    appContainer.appendChild(app_root);
   }
   document.addEventListener("DOMContentLoaded", initializeApp);
 })();
