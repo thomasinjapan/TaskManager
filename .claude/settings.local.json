@@ -3,38 +3,9 @@
     "allow": [
       "Skill(update-config)",
       "Bash(grep -v \"^d.*\\\\.$\")",
-      "Edit(TaskManager/src/**)",
-      "Write(TaskManager/src/**)",
-      "Edit(TaskManager/todo.md)",
-      "Write(TaskManager/todo.md)",
-      "Edit(TaskManager/tsconfig.json)",
-      "Write(TaskManager/tsconfig.json)",
-      "Edit(TaskManager/wwwroot/index.html)",
-      "Write(TaskManager/wwwroot/index.html)",
-      "Edit(TaskManager/wwwroot/styles.css)",
-      "Write(TaskManager/wwwroot/styles.css)",
-      "Edit(TaskManager/Program.cs)",
-      "Write(TaskManager/Program.cs)",
-      "Edit(TaskManager/package.json)",
-      "Write(TaskManager/package.json)",
-      "Edit(TaskManager/appsettings.json)",
-      "Write(TaskManager/appsettings.json)",
-      "Edit(TaskManager/appsettings.Development.json)",
-      "Write(TaskManager/appsettings.Development.json)",
-      "Edit(TaskManager/TaskManager.csproj)",
-      "Write(TaskManager/TaskManager.csproj)",
-      "Edit(TaskManager/Properties/launchSettings.json)",
-      "Write(TaskManager/Properties/launchSettings.json)",
-      "Edit(CLAUDE.md)",
-      "Write(CLAUDE.md)",
-      "Edit(README.md)",
-      "Write(README.md)",
-      "Edit(doc/**)",
-      "Write(doc/**)"
-    ],
-    "deny": [
-      "Edit(**)",
-      "Write(**)"
+      "Bash(gh pr *)",
+      "Bash(where gh *)",
+      "Bash(winget list *)"
     ]
   }
 }
